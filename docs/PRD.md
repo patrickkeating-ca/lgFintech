@@ -187,7 +187,7 @@ DEFAULT STATE:
 │  └───────────────────────────┘ │
 │                                 │
 │  From your call with Fred       │
-│  Dec 18, 2024                   │
+│  Dec 18, 2025                   │
 │                                 │
 │  Tap for breakdown              │
 └─────────────────────────────────┘
@@ -221,7 +221,7 @@ TAPPED STATE:
 - [ ] Divider line between sections: 1pt, `.secondary` color, 50% opacity
 - [ ] Text "70% HOLD" and "30% SELL" centered, `.headline.bold()` font
 - [ ] Below card: "From your call with Fred" (`.subheadline`, `.secondary`)
-- [ ] Date "Dec 18, 2024" (`.caption`, `.tertiary`)
+- [ ] Date "Dec 18, 2025" (`.caption`, `.tertiary`)
 - [ ] "Tap for breakdown" hint (`.caption`, `.secondary`)
 
 #### AC-2.2: Tap to Expand Animation
@@ -265,7 +265,7 @@ TAPPED STATE:
 - [ ] Haptic feedback on collapse: `.impactOccurred(.light)`
 
 #### AC-2.7: Accessibility
-- [ ] Compact view VoiceOver: "Advisor recommendation: Hold 70%, Sell 30%. From your call with Fred on December 18, 2024. Double tap for breakdown."
+- [ ] Compact view VoiceOver: "Advisor recommendation: Hold 70%, Sell 30%. From your call with Fred on December 18, 2025. Double tap for breakdown."
 - [ ] Expanded view VoiceOver: "Hold section: 1,750 shares, $89,215, move to portfolio. Sell section: 750 shares, $38,235, transfer to checking."
 - [ ] Dynamic Type: all text scales properly
 - [ ] Reduced motion: instant layout change (no animation)
@@ -304,7 +304,7 @@ Tapping "From your call with Fred" opens a frosted glass modal showing conversat
 │                                 │
 │  ┌───────────────────────────┐ │
 │  │ 🗓️  Call with Fred        │ │
-│  │    Dec 18, 2024 • 22 min  │ │
+│  │    Dec 18, 2025 • 22 min  │ │
 │  │                           │ │
 │  │ DISCUSSED:                │ │
 │  │ • Tax implications of     │ │
@@ -329,7 +329,7 @@ Tapping "From your call with Fred" opens a frosted glass modal showing conversat
 ### Acceptance Criteria
 
 #### AC-3.1: Modal Trigger
-- [ ] Tapping "From your call with Fred, Dec 18, 2024" text opens modal
+- [ ] Tapping "From your call with Fred, Dec 18, 2025" text opens modal
 - [ ] Text is tappable (blue color, underlined on press)
 - [ ] Modal presents over current view using `.sheet` modifier
 - [ ] Modal uses `.presentationDetents([.medium])` (half-screen height)
@@ -338,7 +338,7 @@ Tapping "From your call with Fred" opens a frosted glass modal showing conversat
 
 #### AC-3.2: Modal Header
 - [ ] Shows calendar icon (🗓️) + "Call with Fred"
-- [ ] Shows date: "Dec 18, 2024" + duration: "22 min"
+- [ ] Shows date: "Dec 18, 2025" + duration: "22 min"
 - [ ] Header font: `.headline`
 - [ ] Header aligned left, 20pt from edge
 - [ ] Date/duration font: `.subheadline`, `.secondary` color
@@ -767,7 +767,7 @@ struct TaxEstimate: Codable {
   "estimatedValue": 127450.00,
   "advisorRecommendation": {
     "advisorName": "Fred",
-    "conversationDate": "2024-12-18T14:30:00Z",
+    "conversationDate": "2025-12-18T14:30:00Z",
     "conversationDuration": 22,
     "discussionPoints": [
       "Tax implications of holding vs selling",
