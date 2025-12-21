@@ -38,12 +38,10 @@ struct ContentView: View {
 
                 // Split visualization
                 if vest.advisorRecommendation != nil {
-                    SplitVisualization(vest: vest)
-                        .padding(.horizontal)
-                        .onTapGesture {
-                            // Tapping the attribution line opens the modal
-                            showConversation = true
-                        }
+                    SplitVisualization(vest: vest) {
+                        showConversation = true
+                    }
+                    .padding(.horizontal)
                 }
 
                 Spacer(minLength: 40)

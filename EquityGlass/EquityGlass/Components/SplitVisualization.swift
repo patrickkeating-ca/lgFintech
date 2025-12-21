@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SplitVisualization: View {
     let vest: VestEvent
+    let onShowConversation: () -> Void
     @State private var isExpanded = false
 
     var body: some View {
@@ -11,39 +12,45 @@ struct SplitVisualization: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
-            // Split card
-            if !isExpanded {
-                compactView
-            } else {
-                expandedView
+            // Split card (tappable for expand/collapse)
+            Group {
+                if !isExpanded {
+                    compactView
+                } else {
+                    expandedView
+                }
+            }
+            .onTapGesture {
+                toggleExpansion()
             }
 
-            // Attribution
+            // Attribution (tappable for modal)
             if let recommendation = vest.advisorRecommendation {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("From your call with \(recommendation.advisorName)")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.blue)
+                        .underline()
                     Text(recommendation.conversationDate, style: .date)
                         .font(.caption)
                         .foregroundStyle(.tertiary)
                 }
                 .padding(.top, 4)
+                .onTapGesture {
+                    onShowConversation()
+                }
             }
 
             // Hint text
             if !isExpanded {
-                Text("Tap for breakdown")
+                Text("Tap card for breakdown")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
-                Text("Tap sections for more")
+                Text("Tap attribution to view conversation")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-        }
-        .onTapGesture {
-            toggleExpansion()
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityText)
@@ -175,27 +182,30 @@ struct SplitVisualization: View {
 }
 
 #Preview {
-    SplitVisualization(vest: VestEvent(
-        id: UUID(),
-        vestDate: Calendar.current.date(byAdding: .day, value: 47, to: Date())!,
-        companyName: "Steamboat Co.",
-        sharesVesting: 2500,
-        estimatedValue: 127450.00,
-        advisorRecommendation: AdvisorRecommendation(
-            advisorName: "Fred",
-            conversationDate: Date(),
-            conversationDuration: 22,
-            discussionPoints: [
-                "Tax implications of holding vs selling",
-                "Your goal: diversify from company stock",
-                "Market outlook for Q1",
-                "70/30 split strategy"
-            ],
-            recommendationText: "Hold 70% in diversified portfolio, sell 30% to cover taxes + cash needs",
-            holdPercentage: 0.70,
-            sellPercentage: 0.30
+    SplitVisualization(
+        vest: VestEvent(
+            id: UUID(),
+            vestDate: Calendar.current.date(byAdding: .day, value: 47, to: Date())!,
+            companyName: "Steamboat Co.",
+            sharesVesting: 2500,
+            estimatedValue: 127450.00,
+            advisorRecommendation: AdvisorRecommendation(
+                advisorName: "Fred",
+                conversationDate: Date(),
+                conversationDuration: 22,
+                discussionPoints: [
+                    "Tax implications of holding vs selling",
+                    "Your goal: diversify from company stock",
+                    "Market outlook for Q1",
+                    "70/30 split strategy"
+                ],
+                recommendationText: "Hold 70% in diversified portfolio, sell 30% to cover taxes + cash needs",
+                holdPercentage: 0.70,
+                sellPercentage: 0.30
+            ),
+            taxEstimate: nil
         ),
-        taxEstimate: nil
-    ))
+        onShowConversation: { print("Show conversation") }
+    )
     .padding()
 }
