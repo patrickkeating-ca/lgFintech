@@ -37,25 +37,32 @@ struct VestCard: View {
                 .font(.headline)
 
             // Dollar amount (blurred or revealed)
-            ZStack {
-                if !isRevealed {
-                    // Blurred placeholder
-                    Text("$•••,•••")
-                        .font(.system(size: 34, weight: .bold, design: .rounded))
-                        .foregroundStyle(.primary)
-                } else {
-                    // Revealed amount
-                    Text(vest.estimatedValue, format: .currency(code: "USD"))
-                        .font(.system(size: 34, weight: .bold, design: .rounded))
-                        .contentTransition(.numericText(value: vest.estimatedValue))
+            VStack(alignment: .leading, spacing: 4) {
+                ZStack {
+                    if !isRevealed {
+                        // Blurred placeholder with tilde
+                        Text("~$•••,•••")
+                            .font(.system(size: 34, weight: .bold, design: .rounded))
+                            .foregroundStyle(.primary)
+                    } else {
+                        // Revealed amount with tilde
+                        Text("~\(vest.estimatedValue, format: .currency(code: "USD"))")
+                            .font(.system(size: 34, weight: .bold, design: .rounded))
+                            .contentTransition(.numericText(value: vest.estimatedValue))
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .visualEffect { content, proxy in
+                    content
+                        .blur(radius: isRevealed ? 0 : 12)
+                }
+                .animation(.smooth(duration: 0.5), value: isRevealed)
+
+                // Disclaimer
+                Text("Amount may change based on stock price")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .visualEffect { content, proxy in
-                content
-                    .blur(radius: isRevealed ? 0 : 12)
-            }
-            .animation(.smooth(duration: 0.5), value: isRevealed)
 
             // Tap to reveal / Auto-hide indicator
             if !isRevealed {
