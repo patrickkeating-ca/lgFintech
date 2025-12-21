@@ -163,11 +163,8 @@ struct SplitVisualization: View {
             return "No advisor recommendation"
         }
 
-        let holdValueText = vest.holdValue.formatted(.currency(code: "USD"))
-        let sellValueText = vest.sellValue.formatted(.currency(code: "USD"))
-
         if isExpanded {
-            return "Hold section: \(vest.holdShares) shares, \(holdValueText), move to portfolio. Sell section: \(vest.sellShares) shares, \(sellValueText), transfer to checking."
+            return "Hold section: \(vest.holdShares) shares, \(vest.holdValue, format: .currency(code: "USD")), move to portfolio. Sell section: \(vest.sellShares) shares, \(vest.sellValue, format: .currency(code: "USD")), transfer to checking."
         } else {
             return "Advisor recommendation: Hold \(Int(rec.holdPercentage * 100))%, Sell \(Int(rec.sellPercentage * 100))%. From your call with \(rec.advisorName) on \(rec.formattedDate)."
         }

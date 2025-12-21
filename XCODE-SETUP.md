@@ -1,4 +1,4 @@
-# Xcode Setup Instructions
+                 # Xcode Setup Instructions
 
 ## Step 1: Create Xcode Project
 
@@ -101,7 +101,6 @@ EquityGlass/
 
 1. Select a simulator:
    - Top toolbar → Click device menu → **iPhone 15 Pro** (or any iOS 17+ device)
-
 2. Build the project:
    - Press **⌘ + B** (Command + B)
    - Wait for build to complete

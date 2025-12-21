@@ -84,7 +84,7 @@ struct VestCard: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(isRevealed ?
-            "Vest amount: \(vest.estimatedValue.formatted(.currency(code: "USD")))" :
+            "Vest amount: \(vest.estimatedValue, format: .currency(code: "USD"))" :
             "Vest amount hidden. Double tap to reveal with Face ID")
         .accessibilityHint(isRevealed ? "" : "Requires Face ID authentication")
     }
