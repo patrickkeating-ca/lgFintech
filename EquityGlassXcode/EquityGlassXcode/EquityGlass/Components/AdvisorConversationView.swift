@@ -5,69 +5,73 @@ struct AdvisorConversationView: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            // Header
-            HStack(spacing: 12) {
-                Image(systemName: "calendar.badge.clock")
-                    .font(.title2)
-                    .foregroundStyle(.blue)
+        VStack(spacing: 0) {
+            // Scrollable content
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    // Header
+                    HStack(spacing: 12) {
+                        Image(systemName: "calendar.badge.clock")
+                            .font(.title2)
+                            .foregroundStyle(.blue)
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Call with \(recommendation.advisorName)")
-                        .font(.headline)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Call with \(recommendation.advisorName)")
+                                .font(.headline)
 
-                    HStack(spacing: 4) {
-                        Text(recommendation.conversationDate, style: .date)
-                        Text("•")
-                        Text(recommendation.formattedDuration)
+                            HStack(spacing: 4) {
+                                Text(recommendation.conversationDate, style: .date)
+                                Text("•")
+                                Text(recommendation.formattedDuration)
+                            }
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        }
+
+                        Spacer()
                     }
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                }
+                    .padding(.bottom, 8)
 
-                Spacer()
-            }
-            .padding(.bottom, 8)
+                    Divider()
 
-            Divider()
+                    // Discussion points
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("DISCUSSED:")
+                            .font(.caption.bold())
+                            .foregroundStyle(.secondary)
 
-            // Discussion points
-            VStack(alignment: .leading, spacing: 12) {
-                Text("DISCUSSED:")
-                    .font(.caption.bold())
-                    .foregroundStyle(.secondary)
-
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(recommendation.discussionPoints, id: \.self) { point in
-                        HStack(alignment: .top, spacing: 8) {
-                            Text("•")
-                                .foregroundStyle(.blue)
-                            Text(point)
-                                .font(.body)
+                        VStack(alignment: .leading, spacing: 8) {
+                            ForEach(recommendation.discussionPoints, id: \.self) { point in
+                                HStack(alignment: .top, spacing: 8) {
+                                    Text("•")
+                                        .foregroundStyle(.blue)
+                                    Text(point)
+                                        .font(.body)
+                                }
+                            }
                         }
                     }
+
+                    Divider()
+
+                    // Recommendation
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("\(recommendation.advisorName.uppercased())'S RECOMMENDATION:")
+                            .font(.caption.bold())
+                            .foregroundStyle(.secondary)
+
+                        Text(recommendation.recommendationText)
+                            .font(.body)
+                            .padding(16)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color.green.opacity(0.05))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
                 }
+                .padding(20)
             }
 
-            Divider()
-
-            // Recommendation
-            VStack(alignment: .leading, spacing: 12) {
-                Text("\(recommendation.advisorName.uppercased())'S RECOMMENDATION:")
-                    .font(.caption.bold())
-                    .foregroundStyle(.secondary)
-
-                Text(recommendation.recommendationText)
-                    .font(.body)
-                    .padding(16)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.green.opacity(0.05))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-            }
-
-            Spacer()
-
-            // Action buttons
+            // Fixed action buttons at bottom
             VStack(spacing: 12) {
                 Button(action: {
                     // TODO: Deep link to Schwab messaging
@@ -97,8 +101,9 @@ struct AdvisorConversationView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
             }
+            .padding(20)
+            .background(.ultraThinMaterial)
         }
-        .padding(20)
         .presentationDetents([.medium])
         .presentationBackground(.ultraThinMaterial)
         .accessibilityElement(children: .combine)
