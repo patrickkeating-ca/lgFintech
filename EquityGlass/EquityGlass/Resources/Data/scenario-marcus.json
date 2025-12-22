@@ -1,0 +1,31 @@
+{
+  "id": "MARCUS-001",
+  "vestDate": "2026-02-06T09:00:00Z",
+  "companyName": "Invictus Sports Network",
+  "sharesVesting": 600,
+  "estimatedValue": 30600.00,
+  "advisorRecommendation": {
+    "advisorName": "Fred",
+    "conversationDate": "2025-12-18T14:30:00Z",
+    "conversationDuration": 28,
+    "discussionPoints": [
+      "Understanding PSUs and how performance affects vesting",
+      "Tax implications now that you're in a higher bracket",
+      "Balancing short-term goals (house) vs long-term (education fund)",
+      "ESPP strategy - max out or reduce?",
+      "Building confidence to make informed equity decisions"
+    ],
+    "recommendationText": "Let's meet in January to discuss your options. Before then, review the prep checklist I'm sending. Three key questions to think about: 1) How much do you need liquid for the house down payment? 2) What's your risk tolerance with the PSUs? 3) Should we diversify some of those older RSU grants?",
+    "holdPercentage": 0.60,
+    "sellPercentage": 0.40
+  },
+  "taxEstimate": {
+    "grossValue": 30600.00,
+    "federalTax": 7344.00,
+    "federalRate": 0.24,
+    "stateTax": 0.00,
+    "stateRate": 0.00,
+    "ficaTax": 459.00,
+    "ficaRate": 0.015
+  }
+}

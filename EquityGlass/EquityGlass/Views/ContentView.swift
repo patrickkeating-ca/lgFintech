@@ -32,6 +32,13 @@ struct ContentView: View {
                     .padding(.horizontal)
                     .padding(.top, 20)
 
+                // Scenario picker
+                ScenarioPicker(selectedScenario: $dataStore.currentScenario) { scenario in
+                    dataStore.loadScenario(scenario)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
+
                 // Privacy blur card
                 VestCard(vest: vest)
                     .padding(.horizontal)

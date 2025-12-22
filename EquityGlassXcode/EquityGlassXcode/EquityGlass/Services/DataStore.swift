@@ -6,17 +6,19 @@ class DataStore {
     var vestEvent: VestEvent?
     var isLoading = false
     var error: Error?
+    var currentScenario: Scenario = .alex
 
     init() {
-        loadVestEvent()
+        loadScenario(currentScenario)
     }
 
-    func loadVestEvent() {
+    func loadScenario(_ scenario: Scenario) {
+        currentScenario = scenario
         isLoading = true
         error = nil
 
-        guard let url = Bundle.main.url(forResource: "vest-event", withExtension: "json") else {
-            error = NSError(domain: "DataStore", code: 404, userInfo: [NSLocalizedDescriptionKey: "vest-event.json not found"])
+        guard let url = Bundle.main.url(forResource: scenario.fileName, withExtension: "json") else {
+            error = NSError(domain: "DataStore", code: 404, userInfo: [NSLocalizedDescriptionKey: "\(scenario.fileName).json not found"])
             isLoading = false
             return
         }
@@ -31,5 +33,10 @@ class DataStore {
             self.error = error
             isLoading = false
         }
+    }
+
+    // Legacy method for backwards compatibility
+    func loadVestEvent() {
+        loadScenario(currentScenario)
     }
 }
