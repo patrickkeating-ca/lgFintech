@@ -51,6 +51,12 @@ struct ContentView: View {
                     .padding(.horizontal)
                 }
 
+                // Tax withholding layers
+                if let taxEstimate = vest.taxEstimate {
+                    TaxWithholdingLayers(taxEstimate: taxEstimate)
+                        .padding(.horizontal)
+                }
+
                 Spacer(minLength: 40)
             }
         }
