@@ -127,6 +127,15 @@ struct TaxWithholdingLayers: View {
             RoundedRectangle(cornerRadius: 12)
                 .strokeBorder(.white.opacity(0.1), lineWidth: 1)
         )
+        .shadow(
+            color: .black.opacity(isExpanded ? 0.2 : 0),
+            radius: isExpanded ? 12 : 2,
+            x: 0,
+            y: isExpanded ? 4 : 1
+        )
+        .scaleEffect(isExpanded ? 1.02 : 1.0)
+        .zIndex(isExpanded ? 1 : 0)
+        .animation(.smooth(duration: 0.4), value: isExpanded)
         .onTapGesture {
             withAnimation(.smooth(duration: 0.4)) {
                 if expandedLayer == layer {
