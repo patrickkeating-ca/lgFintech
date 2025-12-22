@@ -44,9 +44,10 @@
 ## Feature Set (Priority Order)
 
 ### Phase 1: Primary Showcase (This Week)
-1. **Privacy Blur** - Face ID reveal of dollar amounts
-2. **70/30 Split Visualization** - Interactive glass morph showing hold/sell breakdown
-3. **Advisor Conversation Context** - Compliance-safe recommendation display
+1. **Multi-Scenario System** - Switch between two user personas for demo
+2. **Privacy Blur** - Face ID reveal of dollar amounts
+3. **70/30 Split Visualization** - Interactive glass morph showing hold/sell breakdown
+4. **Advisor Conversation Context** - Compliance-safe recommendation display
 
 ### Phase 2: Supporting Showcase (Week 2)
 4. **Tax Withholding Layers** - Stacked glass showing gross → taxes → net
@@ -58,6 +59,173 @@
 8. **Countdown Progress Ring** - Visual time-to-vest
 9. **Empty States** - Polished glass checkmark
 10. **Notification Preview** - Alert overlay with context
+
+---
+
+## FEATURE 0: Multi-Scenario System
+
+### Description
+Dropdown picker allows switching between two user personas during demo. Same UI/UX, different content only. Demonstrates app works for different employee levels and situations within entertainment company.
+
+### User Stories
+> "As a demo presenter, I want to quickly switch between executive and manager scenarios so I can show the app adapts to different user needs."
+
+> "As a stakeholder, I want to see how the app serves both high-level execs and mid-level managers so I understand its broad applicability."
+
+### Two Scenarios
+
+#### Scenario 1: Alex Chen (Executive)
+- **Role**: VP of Content Strategy
+- **Company**: Minnievision (Steamboat Co. division)
+- **Location**: California
+- **Equity**: $175k upcoming vest
+  - 3,430 shares at ~$51/share
+  - Mix of RSUs and PSUs
+  - Multiple overlapping grants
+- **Tax**: California (state + federal + FICA) = ~40% effective rate
+- **Advisor Tone**: Wealth management, efficient execution
+  - "Execute 70/30 split on vest date"
+  - Mentions donor-advised fund, tax-loss harvesting
+  - Coordination with tax specialist (Maria)
+- **Psychology**: Confident, experienced, wants delegation not education
+
+#### Scenario 2: Marcus Rodriguez (Manager)
+- **Role**: IT Manager, College Football Division
+- **Company**: Invictus Sports Network (Steamboat Co. division)
+- **Location**: Austin, Texas
+- **Equity**: $30.6k upcoming vest
+  - 600 shares at $51/share
+  - Recently promoted, first PSU grant
+  - Building equity over 8 years
+- **Tax**: Texas (federal + FICA only, no state) = ~25% effective rate
+- **Advisor Tone**: Educational, partnership-focused
+  - "Let's discuss your options in January"
+  - Prep checklist provided
+  - Questions to think about before meeting
+- **Psychology**: Learning mode, wants to understand, building confidence
+
+### Visual Design
+
+**Scenario Picker (Glassmorphic Dropdown)**
+```
+┌─────────────────────────────────┐
+│  Equity Vest                    │
+│                                 │
+│  ┌───────────────────────────┐ │
+│  │ Alex Chen              ▼  │ │ ← Dropdown button
+│  │ VP Content • Minnievision │ │
+│  └───────────────────────────┘ │
+│                                 │
+│  [Rest of app content...]       │
+└─────────────────────────────────┘
+
+Tap dropdown →
+
+┌─────────────────────────────────┐
+│  ┌───────────────────────────┐ │
+│  │ Alex Chen                 │ │ ← Current (checked)
+│  │ VP Content • Minnievision │ │
+│  ├───────────────────────────┤ │
+│  │ Marcus Rodriguez          │ │ ← Other option
+│  │ IT Manager • Invictus     │ │
+│  └───────────────────────────┘ │
+└─────────────────────────────────┘
+```
+
+### Acceptance Criteria
+
+#### AC-0.1: Scenario Picker Display
+- [ ] Picker appears below "Equity Vest" title
+- [ ] Shows current scenario: Name + Subtitle
+- [ ] Name: `.headline` font
+- [ ] Subtitle: `.caption` font, `.secondary` color
+- [ ] Dropdown icon (chevron.down.circle.fill) on right, `.blue` color
+- [ ] Background: `.ultraThinMaterial`
+- [ ] Corner radius: 12pt
+- [ ] Padding: 16pt horizontal, 12pt vertical
+
+#### AC-0.2: Dropdown Menu Interaction
+- [ ] Tapping picker opens Menu
+- [ ] Menu shows both scenarios
+- [ ] Each option shows: Name + Subtitle
+- [ ] Current scenario has checkmark (implicit via Menu)
+- [ ] Tapping option switches scenario
+- [ ] Menu dismisses after selection
+
+#### AC-0.3: Scenario Switching
+- [ ] Selecting scenario triggers `dataStore.loadScenario()`
+- [ ] Loading state appears briefly (if needed)
+- [ ] All data updates: vest amount, advisor text, tax breakdown, split percentages
+- [ ] Animations smooth during transition
+- [ ] No flash/flicker during data swap
+- [ ] Picker updates to show new scenario name
+
+#### AC-0.4: Alex Chen Data
+- [ ] Name: "Alex Chen"
+- [ ] Company: "Minnievision"
+- [ ] Shares: 3,430
+- [ ] Estimated value: $175,000
+- [ ] Advisor: Fred
+- [ ] Discussion points: 4 items (tax-loss harvesting, donor-advised fund, etc.)
+- [ ] Recommendation: "Execute 70/30 split..." (directive tone)
+- [ ] Hold %: 70%
+- [ ] Sell %: 30%
+- [ ] Tax: Federal $48,475 (27.7%), State $19,250 (11%), FICA $2,625 (1.5%)
+- [ ] Net proceeds: $104,650
+
+#### AC-0.5: Marcus Rodriguez Data
+- [ ] Name: "Marcus Rodriguez"
+- [ ] Company: "Invictus Sports Network"
+- [ ] Shares: 600
+- [ ] Estimated value: $30,600
+- [ ] Advisor: Fred
+- [ ] Discussion points: 5 items (understanding PSUs, tax implications, goals, ESPP, confidence)
+- [ ] Recommendation: "Let's meet in January..." (educational tone)
+- [ ] Hold %: 60%
+- [ ] Sell %: 40%
+- [ ] Tax: Federal $7,344 (24%), State $0 (0%), FICA $459 (1.5%)
+- [ ] Net proceeds: $22,797
+
+#### AC-0.6: UI Consistency
+- [ ] Privacy blur works identically in both scenarios
+- [ ] Split visualization morphs identically in both scenarios
+- [ ] Advisor modal layout identical in both scenarios
+- [ ] Only content changes, not UI structure
+- [ ] Liquid Glass effects remain consistent
+
+#### AC-0.7: Accessibility
+- [ ] Picker has accessibility label: "Scenario selector. Current: [Name]"
+- [ ] VoiceOver announces scenario change: "Switched to [Name]"
+- [ ] Dynamic Type: picker text scales properly
+- [ ] Menu items have clear labels with role descriptions
+
+#### AC-0.8: Demo Flow Support
+- [ ] Can switch scenarios multiple times without issues
+- [ ] Data doesn't corrupt or mix between scenarios
+- [ ] Fast enough for live demo (< 0.5s swap)
+- [ ] No crashes on rapid switching
+
+### Technical Notes
+- Enum `Scenario` with cases: `.alex`, `.marcus`
+- Each case has: `rawValue` (name), `subtitle`, `fileName` (JSON file)
+- DataStore has `currentScenario: Scenario` property
+- `loadScenario(_ scenario: Scenario)` loads corresponding JSON
+- ScenarioPicker is reusable SwiftUI `Menu` component
+- JSON files: `scenario-alex.json`, `scenario-marcus.json`
+
+### Dependencies
+- None (standalone feature)
+- Works with all other features (privacy blur, split viz, advisor modal)
+
+### Out of Scope (Verbal Narrative Only)
+- Goal tracking UI
+- Educational content library/tooltips
+- Seasonal work mode (football season)
+- Peer comparison
+- Scenario modeling tool
+- Multiple advisor UI
+
+**These are discussed verbally during demo, not built as features.**
 
 ---
 
