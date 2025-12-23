@@ -4,9 +4,9 @@
   "companyName": "Steamboat Co",
   "sharesVesting": 3430,
   "ticker": "STEAMBO",
-  "stockPrice": 168.73,
+  "stockPrice": 112.18,
   "stockPriceLastUpdated": "2025-12-22T10:00:00Z",
-  "estimatedValue": 578963.9,
+  "estimatedValue": 384777.40,
   "advisorRecommendation": {
     "advisorName": "Fred",
     "conversationDate": "2025-12-18T14:30:00Z",
@@ -22,12 +22,12 @@
     "sellPercentage": 0.30
   },
   "taxEstimate": {
-    "grossValue": 578963.9,
-    "federalTax": 160352.98,
+    "grossValue": 384777.40,
+    "federalTax": 106583.34,
     "federalRate": 0.277,
-    "stateTax": 63686.03,
+    "stateTax": 42325.51,
     "stateRate": 0.11,
-    "ficaTax": 8684.46,
+    "ficaTax": 5771.66,
     "ficaRate": 0.015
   }
 }
