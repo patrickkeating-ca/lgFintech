@@ -15,8 +15,8 @@ enum Scenario: String, CaseIterable, Identifiable {
 
     var subtitle: String {
         switch self {
-        case .marcus: return "IT Manager • Invictus Sports Network"
-        case .alex: return "VP Content Strategy • Minnievision"
+        case .marcus: return "IT Manager • Steamboat Co"
+        case .alex: return "VP Content Strategy • Steamboat Co"
         }
     }
 }
