@@ -39,6 +39,10 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
 
+                // Vest schedule overview
+                VestScheduleOverview(currentVest: vest)
+                    .padding(.horizontal)
+
                 // Privacy blur card
                 VestCard(vest: vest)
                     .padding(.horizontal)
