@@ -41,12 +41,12 @@ struct VestCard: View {
                 ZStack {
                     if !isRevealed {
                         // Blurred placeholder with tilde
-                        Text("~$•••,•••")
+                        Text("$•••,••• (est.)")
                             .font(.system(size: 34, weight: .bold, design: .rounded))
                             .foregroundStyle(.primary)
                     } else {
                         // Revealed amount with tilde
-                        Text("~\(vest.estimatedValue, format: .currency(code: "USD"))")
+                        Text("\(vest.estimatedValue, format: .currency(code: "USD")) (est.)")
                             .font(.system(size: 34, weight: .bold, design: .rounded))
                             .contentTransition(.numericText(value: vest.estimatedValue))
                     }

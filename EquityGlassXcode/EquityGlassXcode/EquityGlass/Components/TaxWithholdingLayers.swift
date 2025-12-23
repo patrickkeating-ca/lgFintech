@@ -27,6 +27,9 @@ struct TaxWithholdingLayers: View {
             Text("Tax Withholding Breakdown")
                 .font(.title2.bold())
                 .padding(.bottom, 4)
+            Text("These numbers are estimates and may change.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
 
             VStack(spacing: 8) {
                 // Gross value (starting point)
@@ -110,7 +113,7 @@ struct TaxWithholdingLayers: View {
 
                 Spacer()
 
-                Text("\(isDeduction ? "-" : "")~\(amount.formatted(.currency(code: "USD")))")
+                Text("\(isDeduction ? "-" : "")\(amount.formatted(.currency(code: "USD")))")
                     .font(layer == .gross || layer == .net ? .title3.bold() : .body)
                     .foregroundStyle(.primary)
             }
