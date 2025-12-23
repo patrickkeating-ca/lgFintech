@@ -3,6 +3,7 @@ import SwiftUI
 struct AdvisorConversationView: View {
     let recommendation: AdvisorRecommendation
     @Environment(\.dismiss) var dismiss
+    @State private var animateIn = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -104,8 +105,17 @@ struct AdvisorConversationView: View {
             .padding(20)
             .background(.ultraThinMaterial)
         }
+        .opacity(animateIn ? 1 : 0)
+        .scaleEffect(animateIn ? 1 : 0.95)
+        .blur(radius: animateIn ? 0 : 10)
+        .onAppear {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                animateIn = true
+            }
+        }
         .presentationDetents([.medium])
         .presentationBackground(.ultraThinMaterial)
+        .presentationBackgroundInteraction(.enabled)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityText)
     }
