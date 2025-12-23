@@ -43,6 +43,11 @@ struct ContentView: View {
                 VestScheduleOverview(currentVest: vest)
                     .padding(.horizontal)
 
+                // Timeline carousel
+                if let events = vest.timelineEvents, !events.isEmpty {
+                    TimelineCarouselView(events: events)
+                }
+
                 // Privacy blur card
                 VestCard(vest: vest)
                     .padding(.horizontal)

@@ -97,7 +97,8 @@ struct VestScheduleOverview: View {
         stockPriceLastUpdated: Date(),
         estimatedValue: 578963.9,
         advisorRecommendation: nil,
-        taxEstimate: nil
+        taxEstimate: nil,
+        timelineEvents: nil
     ))
     .padding()
 }

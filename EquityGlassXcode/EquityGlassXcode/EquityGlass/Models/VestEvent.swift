@@ -11,6 +11,7 @@ struct VestEvent: Identifiable, Codable {
     let estimatedValue: Double
     let advisorRecommendation: AdvisorRecommendation?
     let taxEstimate: TaxEstimate?
+    let timelineEvents: [TimelineEvent]?
 
     // Computed properties
     var daysUntilVest: Int {
