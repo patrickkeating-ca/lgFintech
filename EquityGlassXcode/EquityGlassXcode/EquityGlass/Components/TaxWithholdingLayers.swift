@@ -222,23 +222,23 @@ struct TaxWithholdingLayers: View {
         VStack(spacing: 20) {
             // Alex's scenario (with state tax)
             TaxWithholdingLayers(taxEstimate: TaxEstimate(
-                grossValue: 175000,
-                federalTax: 48475,
+                grossValue: 578963.9,
+                federalTax: 160352.98,
                 federalRate: 0.277,
-                stateTax: 19250,
+                stateTax: 63686.03,
                 stateRate: 0.11,
-                ficaTax: 2625,
+                ficaTax: 8684.46,
                 ficaRate: 0.015
             ))
 
             // Marcus's scenario (no state tax)
             TaxWithholdingLayers(taxEstimate: TaxEstimate(
-                grossValue: 30600,
-                federalTax: 7344,
+                grossValue: 101238.0,
+                federalTax: 24297.12,
                 federalRate: 0.24,
                 stateTax: 0,
                 stateRate: 0,
-                ficaTax: 459,
+                ficaTax: 1518.57,
                 ficaRate: 0.015
             ))
         }

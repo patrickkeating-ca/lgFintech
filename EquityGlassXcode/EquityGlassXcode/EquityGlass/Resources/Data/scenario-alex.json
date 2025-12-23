@@ -3,7 +3,10 @@
   "vestDate": "2026-02-06T09:00:00Z",
   "companyName": "Minnievision",
   "sharesVesting": 3430,
-  "estimatedValue": 175000.00,
+  "ticker": "MNVSZA",
+  "stockPrice": 168.73,
+  "stockPriceLastUpdated": "2025-12-22T10:00:00Z",
+  "estimatedValue": 578963.9,
   "advisorRecommendation": {
     "advisorName": "Fred",
     "conversationDate": "2025-12-18T14:30:00Z",
@@ -19,12 +22,12 @@
     "sellPercentage": 0.30
   },
   "taxEstimate": {
-    "grossValue": 175000.00,
-    "federalTax": 48475.00,
+    "grossValue": 578963.9,
+    "federalTax": 160352.98,
     "federalRate": 0.277,
-    "stateTax": 19250.00,
+    "stateTax": 63686.03,
     "stateRate": 0.11,
-    "ficaTax": 2625.00,
+    "ficaTax": 8684.46,
     "ficaRate": 0.015
   }
 }

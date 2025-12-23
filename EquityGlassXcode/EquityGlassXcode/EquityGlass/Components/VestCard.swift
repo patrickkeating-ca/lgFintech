@@ -12,9 +12,19 @@ struct VestCard: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
-            // Company name
-            Text(vest.companyName)
-                .font(.title2.bold())
+            // Company name and stock price
+            HStack(alignment: .top) {
+                Text(vest.companyName)
+                    .font(.title2.bold())
+                Spacer()
+                VStack(alignment: .trailing) {
+                    Text("\(vest.ticker): \(vest.stockPrice, format: .currency(code: "USD"))")
+                        .font(.headline)
+                    Text("Updated \(vest.stockPriceLastUpdated.formatted(date: .omitted, time: .shortened))")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                }
+            }
 
             // Vest date and countdown
             HStack {
@@ -103,9 +113,12 @@ struct VestCard: View {
     VestCard(vest: VestEvent(
         id: UUID(),
         vestDate: Calendar.current.date(byAdding: .day, value: 47, to: Date())!,
-        companyName: "Steamboat Co.",
-        sharesVesting: 2500,
-        estimatedValue: 127450.00,
+        companyName: "Minnievision",
+        sharesVesting: 3430,
+        ticker: "MNVSZA",
+        stockPrice: 168.73,
+        stockPriceLastUpdated: Date(),
+        estimatedValue: 578963.9,
         advisorRecommendation: nil,
         taxEstimate: nil
     ))

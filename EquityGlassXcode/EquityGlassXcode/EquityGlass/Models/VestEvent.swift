@@ -5,6 +5,9 @@ struct VestEvent: Identifiable, Codable {
     let vestDate: Date
     let companyName: String
     let sharesVesting: Int
+    let ticker: String
+    let stockPrice: Double
+    let stockPriceLastUpdated: Date
     let estimatedValue: Double
     let advisorRecommendation: AdvisorRecommendation?
     let taxEstimate: TaxEstimate?

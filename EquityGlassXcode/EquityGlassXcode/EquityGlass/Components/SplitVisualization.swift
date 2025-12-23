@@ -183,9 +183,12 @@ struct SplitVisualization: View {
         vest: VestEvent(
             id: UUID(),
             vestDate: Calendar.current.date(byAdding: .day, value: 47, to: Date())!,
-            companyName: "Steamboat Co.",
-            sharesVesting: 2500,
-            estimatedValue: 127450.00,
+            companyName: "Minnievision",
+            sharesVesting: 3430,
+            ticker: "MNVSZA",
+            stockPrice: 168.73,
+            stockPriceLastUpdated: Date(),
+            estimatedValue: 578963.9,
             advisorRecommendation: AdvisorRecommendation(
                 advisorName: "Fred",
                 conversationDate: Date(),
