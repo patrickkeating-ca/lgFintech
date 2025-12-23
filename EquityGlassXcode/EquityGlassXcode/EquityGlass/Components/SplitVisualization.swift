@@ -99,66 +99,58 @@ struct SplitVisualization: View {
     }
 
     var expandedView: some View {
-        GeometryReader { geometry in
-            HStack(spacing: 12) {
-                // Hold section (70%)
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("HOLD \(Int((vest.advisorRecommendation?.holdPercentage ?? 0.7) * 100))%")
-                        .font(.title3.bold())
-                        .foregroundStyle(.primary)
+        VStack(spacing: 12) {
+            // Hold section
+            VStack(alignment: .leading, spacing: 8) {
+                Text("HOLD \(Int((vest.advisorRecommendation?.holdPercentage ?? 0.7) * 100))%")
+                    .font(.title3.bold())
 
-                    Spacer()
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("\(vest.holdShares) sh")
-                            .font(.title2.monospacedDigit())
-
+                HStack(alignment: .bottom, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(vest.holdShares) shares")
+                            .font(.title.monospacedDigit())
                         Text(vest.holdValue, format: .currency(code: "USD"))
                             .font(.title3.bold())
+                            .foregroundStyle(.secondary)
                     }
-
                     Spacer()
-
                     Text("Move to portfolio")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
-                .padding(16)
-                .frame(width: (geometry.size.width - 12) * (vest.advisorRecommendation?.holdPercentage ?? 0.7), alignment: .topLeading)
-                .frame(maxHeight: .infinity, alignment: .topLeading)
-                .background(.regularMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .background(.regularMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .shadow(color: .black.opacity(isExpanded ? 0.2 : 0), radius: 10, y: 5)
 
-                // Sell section (30%)
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("SELL \(Int((vest.advisorRecommendation?.sellPercentage ?? 0.3) * 100))%")
-                        .font(.title3.bold())
-                        .foregroundStyle(.primary)
+            // Sell section
+            VStack(alignment: .leading, spacing: 8) {
+                Text("SELL \(Int((vest.advisorRecommendation?.sellPercentage ?? 0.3) * 100))%")
+                    .font(.title3.bold())
 
-                    Spacer()
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("\(vest.sellShares) sh")
-                            .font(.title2.monospacedDigit())
-
+                HStack(alignment: .bottom, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(vest.sellShares) shares")
+                            .font(.title.monospacedDigit())
                         Text(vest.sellValue, format: .currency(code: "USD"))
                             .font(.title3.bold())
+                            .foregroundStyle(.secondary)
                     }
-
                     Spacer()
-
                     Text("Transfer to checking")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
-                .padding(16)
-                .frame(width: (geometry.size.width - 12) * (vest.advisorRecommendation?.sellPercentage ?? 0.3), alignment: .topLeading)
-                .frame(maxHeight: .infinity, alignment: .topLeading)
-                .background(.regularMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .background(.regularMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .shadow(color: .black.opacity(isExpanded ? 0.2 : 0), radius: 10, y: 5)
         }
-        .frame(height: 220)
+        .frame(height: 280)
     }
 
     func toggleExpansion() {
