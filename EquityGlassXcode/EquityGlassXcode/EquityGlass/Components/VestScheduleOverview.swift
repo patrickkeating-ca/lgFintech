@@ -5,12 +5,21 @@ struct VestScheduleOverview: View {
     @State private var isExpanded = false
 
     // Mock upcoming vests for demo
-    private var upcomingVests: [(date: String, amount: String, isCurrent: Bool)] {
+    private var upcomingVests: [(date: String, type: String, shares: Int, isCurrent: Bool)] {
         [
-            (date: "Feb 6, 2026", amount: currentVest.estimatedValue.formatted(.currency(code: "USD")), isCurrent: true),
-            (date: "May 15, 2026", amount: "$" + String(Int(currentVest.estimatedValue * 0.95) / 1000) + "K", isCurrent: false),
-            (date: "Aug 15, 2026", amount: "$" + String(Int(currentVest.estimatedValue * 0.98) / 1000) + "K", isCurrent: false)
+            (date: "Feb 6, 2026", type: "RSU", shares: currentVest.sharesVesting, isCurrent: true),
+            (date: "May 15, 2026", type: "RSU", shares: Int(Double(currentVest.sharesVesting) * 0.95), isCurrent: false),
+            (date: "Aug 15, 2026", type: "PSU", shares: Int(Double(currentVest.sharesVesting) * 1.10), isCurrent: false)
         ]
+    }
+
+    private func typeColor(_ type: String) -> Color {
+        switch type {
+        case "RSU": return .blue
+        case "PSU": return .purple
+        case "ESPP": return .green
+        default: return .gray
+        }
     }
 
     var body: some View {
@@ -55,22 +64,29 @@ struct VestScheduleOverview: View {
                                 .foregroundStyle(vest.isCurrent ? .blue : .gray)
                                 .frame(width: 20)
 
-                            VStack(alignment: .leading, spacing: 2) {
+                            VStack(alignment: .leading, spacing: 4) {
                                 Text(vest.date)
                                     .font(vest.isCurrent ? .subheadline.bold() : .subheadline)
                                     .foregroundStyle(vest.isCurrent ? .primary : .secondary)
 
-                                Text("\(currentVest.sharesVesting) shares")
-                                    .font(.caption2)
-                                    .foregroundStyle(.tertiary)
+                                HStack(spacing: 6) {
+                                    // Liquid Glass type badge
+                                    Text(vest.type)
+                                        .font(.caption2.bold())
+                                        .foregroundStyle(typeColor(vest.type))
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 2)
+                                        .background(typeColor(vest.type).opacity(0.15))
+                                        .background(.ultraThinMaterial)
+                                        .clipShape(Capsule())
+
+                                    Text("\(vest.shares.formatted()) shares")
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                }
                             }
 
                             Spacer()
-
-                            Text(vest.amount)
-                                .font(vest.isCurrent ? .callout.bold() : .callout)
-                                .foregroundStyle(vest.isCurrent ? .primary : .secondary)
-                                .monospacedDigit()
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
