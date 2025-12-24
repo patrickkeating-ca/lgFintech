@@ -29,7 +29,7 @@ struct TimelineCarouselView: View {
 
                     ForEach(0..<min(displayEvents.count + (remainingEvents.isEmpty ? 0 : 1), 7), id: \.self) { index in
                         Circle()
-                            .fill(currentPage == index ? Color.blue : Color.gray.opacity(0.3))
+                            .fill(currentPage == index ? Color.blue : Color.secondary.opacity(0.4))
                             .frame(width: 6, height: 6)
                     }
                 }
@@ -100,7 +100,7 @@ struct TimelineCarouselView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow(color: .black.opacity(0.1), radius: 10, y: 5)
+        .shadow(color: Color.primary.opacity(0.1), radius: 10, y: 5)
     }
 }
 

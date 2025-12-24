@@ -106,7 +106,7 @@ struct TimelineCardView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow(color: .black.opacity(0.1), radius: 10, y: 5)
+        .shadow(color: Color.primary.opacity(0.1), radius: 10, y: 5)
     }
 }
 
