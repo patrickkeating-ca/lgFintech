@@ -71,7 +71,7 @@ struct VestCard: View {
             }
         )
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow(color: .black.opacity(0.1), radius: 10, y: 5)
+        .shadow(color: Color.primary.opacity(0.1), radius: 10, y: 5)
         .scaleEffect(isPressed ? 0.98 : 1.0)
         .animation(.spring(response: 0.4, dampingFraction: 0.6), value: isPressed)
         .simultaneousGesture(

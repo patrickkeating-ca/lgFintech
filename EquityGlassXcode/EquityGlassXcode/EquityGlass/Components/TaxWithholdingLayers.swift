@@ -128,10 +128,10 @@ struct TaxWithholdingLayers: View {
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .strokeBorder(.white.opacity(0.1), lineWidth: 1)
+                .strokeBorder(Color.primary.opacity(0.1), lineWidth: 1)
         )
         .shadow(
-            color: .black.opacity(isExpanded ? 0.2 : 0),
+            color: Color.primary.opacity(isExpanded ? 0.15 : 0),
             radius: isExpanded ? 12 : 2,
             x: 0,
             y: isExpanded ? 4 : 1
@@ -244,5 +244,4 @@ struct TaxWithholdingLayers: View {
         }
         .padding()
     }
-    .background(.black)
 }

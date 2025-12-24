@@ -90,7 +90,7 @@ struct VestScheduleOverview: View {
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
-                        .background(vest.isCurrent ? Color.blue.opacity(0.08) : Color.clear)
+                        .background(vest.isCurrent ? Color.blue.opacity(0.12) : Color.clear)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
                 }
