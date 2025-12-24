@@ -71,19 +71,35 @@ struct TimelineCardView: View {
             }
             .foregroundStyle(.tertiary)
 
-            // Action indicator
+            // Action indicators
             if event.actionable && !event.isPast {
-                HStack {
-                    Image(systemName: "hand.tap")
-                        .font(.caption)
-                    Text("Action Required")
-                        .font(.caption.bold())
+                HStack(spacing: 8) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "hand.tap")
+                            .font(.caption)
+                        Text("Action Required")
+                            .font(.caption.bold())
+                    }
+                    .foregroundStyle(iconColor)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(iconColor.opacity(0.1))
+                    .clipShape(Capsule())
+
+                    // Calendar badge (visual only for demo)
+                    HStack(spacing: 4) {
+                        Image(systemName: "calendar.badge.plus")
+                            .font(.caption2)
+                        Text("Add")
+                            .font(.caption2.bold())
+                    }
+                    .foregroundStyle(.blue)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(.blue.opacity(0.1))
+                    .background(.ultraThinMaterial)
+                    .clipShape(Capsule())
                 }
-                .foregroundStyle(iconColor)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(iconColor.opacity(0.1))
-                .clipShape(Capsule())
             }
         }
         .padding(20)
