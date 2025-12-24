@@ -7,38 +7,22 @@ struct VestCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // Header
-            Text("UPCOMING VEST")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-
-            // Company name and stock price
-            HStack(alignment: .top) {
-                Text(vest.companyName)
-                    .font(.title2.bold())
+            // Header with vest date
+            HStack {
+                Text("UPCOMING VEST")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
                 Spacer()
-                VStack(alignment: .trailing) {
-                    Text("\(vest.ticker): \(vest.stockPrice, format: .currency(code: "USD"))")
-                        .font(.headline)
-                    Text("Updated \(vest.stockPriceLastUpdated.formatted(date: .omitted, time: .shortened))")
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
+                HStack(spacing: 4) {
+                    Text(vest.vestDate, style: .date)
+                        .font(.subheadline.bold())
+                    Text("•")
+                        .foregroundStyle(.secondary)
+                    Text("\(vest.daysUntilVest) days")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
                 }
             }
-
-            // Vest date and countdown
-            HStack {
-                Text(vest.vestDate, style: .date)
-                    .font(.subheadline)
-                Text("•")
-                    .foregroundStyle(.secondary)
-                Text("\(vest.daysUntilVest) days")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-
-            Divider()
-                .padding(.vertical, 4)
 
             // Share count (always visible)
             Text("\(vest.sharesVesting.formatted()) shares")
