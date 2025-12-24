@@ -39,6 +39,15 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
 
+                // Stock info header
+                StockInfoHeader(
+                    companyName: vest.companyName,
+                    ticker: vest.ticker,
+                    stockPrice: vest.stockPrice,
+                    lastUpdated: vest.stockPriceLastUpdated
+                )
+                .padding(.horizontal)
+
                 // Vest schedule overview
                 VestScheduleOverview(currentVest: vest)
                     .padding(.horizontal)
