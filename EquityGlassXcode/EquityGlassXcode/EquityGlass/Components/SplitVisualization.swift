@@ -195,6 +195,7 @@ struct SplitVisualization: View {
                 advisorTitle: "Senior Wealth Advisor",
                 advisorCredentials: "CFP®",
                 advisorCompany: "Schwab Private Client",
+                advisorPhone: nil,
                 conversationDate: Date(),
                 conversationDuration: 22,
                 discussionPoints: [

@@ -74,6 +74,27 @@ struct AdvisorConversationView: View {
 
             // Fixed action buttons at bottom
             VStack(spacing: 12) {
+                // Call button (premium clients only)
+                if let phone = recommendation.advisorPhone {
+                    Button(action: {
+                        if let url = URL(string: "tel://\(phone.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "-", with: ""))") {
+                            // In real app: UIApplication.shared.open(url)
+                            print("Call \(phone)")
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "phone.fill")
+                            Text("Call \(recommendation.displayName)")
+                        }
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.green)
+                        .foregroundStyle(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                }
+
                 Button(action: {
                     // TODO: Deep link to Schwab messaging
                     print("Message \(recommendation.advisorName)")
@@ -135,6 +156,7 @@ struct AdvisorConversationView: View {
                 advisorTitle: "Senior Wealth Advisor",
                 advisorCredentials: "CFP®",
                 advisorCompany: "Schwab Private Client",
+                advisorPhone: "(650) 555-1212",
                 conversationDate: Date(),
                 conversationDuration: 22,
                 discussionPoints: [

@@ -43,6 +43,12 @@ struct AdvisorHeroCard: View {
                                 .font(.caption)
                                 .foregroundStyle(.tertiary)
                         }
+
+                        if let phone = recommendation.advisorPhone {
+                            Text(phone)
+                                .font(.caption)
+                                .foregroundStyle(.blue)
+                        }
                     }
 
                     Spacer()
@@ -128,6 +134,7 @@ struct AdvisorHeroCard: View {
             advisorTitle: "Senior Wealth Advisor",
             advisorCredentials: "CFP®",
             advisorCompany: "Schwab Private Client",
+            advisorPhone: "(650) 555-1212",
             conversationDate: Date(),
             conversationDuration: 22,
             discussionPoints: ["Test"],

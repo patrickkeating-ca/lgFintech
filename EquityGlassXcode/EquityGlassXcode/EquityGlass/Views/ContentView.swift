@@ -69,14 +69,6 @@ struct ContentView: View {
                     .padding(.horizontal)
                 }
 
-                // Split visualization
-                if vest.advisorRecommendation != nil {
-                    SplitVisualization(vest: vest) {
-                        showConversation = true
-                    }
-                    .padding(.horizontal)
-                }
-
                 // Tax withholding layers
                 if let taxEstimate = vest.taxEstimate {
                     TaxWithholdingLayers(taxEstimate: taxEstimate)

@@ -6,6 +6,7 @@ struct AdvisorRecommendation: Codable {
     let advisorTitle: String?
     let advisorCredentials: String?
     let advisorCompany: String?
+    let advisorPhone: String?
     let conversationDate: Date
     let conversationDuration: Int // minutes
     let discussionPoints: [String]
