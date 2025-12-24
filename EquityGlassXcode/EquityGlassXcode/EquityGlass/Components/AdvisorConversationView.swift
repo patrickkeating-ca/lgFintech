@@ -131,6 +131,10 @@ struct AdvisorConversationView: View {
         .sheet(isPresented: .constant(true)) {
             AdvisorConversationView(recommendation: AdvisorRecommendation(
                 advisorName: "Fred",
+                advisorFullName: "Fred Amsden",
+                advisorTitle: "Senior Wealth Advisor",
+                advisorCredentials: "CFP®",
+                advisorCompany: "Schwab Private Client",
                 conversationDate: Date(),
                 conversationDuration: 22,
                 discussionPoints: [

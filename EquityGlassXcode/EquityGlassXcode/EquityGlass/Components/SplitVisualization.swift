@@ -191,6 +191,10 @@ struct SplitVisualization: View {
             estimatedValue: 578963.9,
             advisorRecommendation: AdvisorRecommendation(
                 advisorName: "Fred",
+                advisorFullName: "Fred Amsden",
+                advisorTitle: "Senior Wealth Advisor",
+                advisorCredentials: "CFP®",
+                advisorCompany: "Schwab Private Client",
                 conversationDate: Date(),
                 conversationDuration: 22,
                 discussionPoints: [

@@ -61,6 +61,14 @@ struct ContentView: View {
                 VestCard(vest: vest)
                     .padding(.horizontal)
 
+                // Advisor hero card (premium feature)
+                if let recommendation = vest.advisorRecommendation {
+                    AdvisorHeroCard(recommendation: recommendation) {
+                        showConversation = true
+                    }
+                    .padding(.horizontal)
+                }
+
                 // Split visualization
                 if vest.advisorRecommendation != nil {
                     SplitVisualization(vest: vest) {

@@ -9,6 +9,10 @@
   "estimatedValue": 384777.40,
   "advisorRecommendation": {
     "advisorName": "Fred",
+    "advisorFullName": "Fred Amsden",
+    "advisorTitle": "Senior Wealth Advisor",
+    "advisorCredentials": "CFP®",
+    "advisorCompany": "Schwab Private Client",
     "conversationDate": "2025-12-18T14:30:00Z",
     "conversationDuration": 22,
     "discussionPoints": [
