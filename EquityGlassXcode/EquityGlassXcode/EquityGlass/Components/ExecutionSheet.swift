@@ -85,7 +85,7 @@ struct ExecutionSheet: View {
             // Vest details
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Text("\(vest.sharesVesting.formatted()) shares")
+                    Text("\(vest.sharesVesting.formatted()) RSU shares")
                         .font(.headline)
                     Spacer()
                     Text(vest.vestDate, style: .date)
@@ -106,7 +106,7 @@ struct ExecutionSheet: View {
                             .font(.caption.bold())
                             .foregroundStyle(.secondary)
                         Spacer()
-                        Text("\(holdShares.formatted()) shares")
+                        Text("\(holdShares.formatted()) RSU shares")
                             .font(.title3.bold())
                             .foregroundStyle(.green)
                     }
@@ -131,7 +131,7 @@ struct ExecutionSheet: View {
                             .font(.caption.bold())
                             .foregroundStyle(.secondary)
                         Spacer()
-                        Text("\(sellShares.formatted()) shares")
+                        Text("\(sellShares.formatted()) RSU shares")
                             .font(.title3.bold())
                             .foregroundStyle(.blue)
                     }
@@ -319,7 +319,7 @@ struct ExecutionSheet: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Text("\(holdShares.formatted()) shares")
+                    Text("\(holdShares.formatted()) RSU shares")
                         .font(.subheadline.bold())
                 }
 
@@ -328,12 +328,41 @@ struct ExecutionSheet: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Text("\(sellShares.formatted()) shares")
+                    Text("\(sellShares.formatted()) RSU shares")
                         .font(.subheadline.bold())
                 }
             }
             .padding(16)
             .background(.regularMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+
+            // Next Steps section
+            VStack(alignment: .leading, spacing: 12) {
+                Text("NEXT STEPS")
+                    .font(.caption.bold())
+                    .foregroundStyle(.secondary)
+                    .tracking(0.5)
+
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.caption)
+                            .foregroundStyle(.green)
+                        Text("Trade submitted to Schwab")
+                            .font(.subheadline)
+                    }
+
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "arrow.right.circle")
+                            .font(.caption)
+                            .foregroundStyle(.blue)
+                        Text("Coordinate DAF with Maria (Tax Specialist)")
+                            .font(.subheadline)
+                    }
+                }
+            }
+            .padding(16)
+            .background(Color.blue.opacity(0.05))
             .clipShape(RoundedRectangle(cornerRadius: 12))
 
             Spacer()
