@@ -2,29 +2,23 @@ import SwiftUI
 
 struct AdvisorHeroCard: View {
     let recommendation: AdvisorRecommendation
+    let vest: VestEvent
     let onTap: () -> Void
     @State private var isPulsing = false
+    @State private var showExecutionSheet = false
+    @State private var buttonShimmer: CGFloat = -1.0
+    @State private var orderExecuted = false
 
     var body: some View {
-        Button(action: onTap) {
-            VStack(spacing: 16) {
-                // Avatar and credentials
+        VStack(spacing: 16) {
+            // Tappable advisor section
+            Button(action: onTap) {
                 HStack(spacing: 12) {
-                    // Avatar placeholder (ready for photo)
-                    Circle()
-                        .fill(
-                            LinearGradient(
-                                colors: [Color.blue.opacity(0.6), Color.purple.opacity(0.6)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .overlay(
-                            Text(recommendation.advisorName.prefix(1))
-                                .font(.title.bold())
-                                .foregroundStyle(.white)
-                        )
+                    Image("AdvisorAvatar")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
                         .frame(width: 56, height: 56)
+                        .clipShape(Circle())
                         .shadow(color: .blue.opacity(0.3), radius: 8, y: 4)
 
                     VStack(alignment: .leading, spacing: 2) {
@@ -57,10 +51,12 @@ struct AdvisorHeroCard: View {
                         .font(.caption)
                         .foregroundStyle(.tertiary)
                 }
+            }
+            .buttonStyle(.plain)
 
-                Divider()
+            Divider()
 
-                // Recommendation summary
+            // Recommendation summary
                 VStack(alignment: .leading, spacing: 8) {
                     Text("RECOMMENDATION")
                         .font(.caption)
@@ -91,16 +87,79 @@ struct AdvisorHeroCard: View {
                                 .foregroundStyle(.blue)
                         }
                     }
-
-                    Text("Tap to view full conversation")
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+
+            // Execute/View button
+            if !orderExecuted {
+                // Execute Plan button with shimmer
+                Button(action: {
+                    showExecutionSheet = true
+                }) {
+                    HStack {
+                        Image(systemName: "bolt.fill")
+                            .font(.headline)
+                        Text("Execute Plan")
+                            .font(.headline)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        ZStack {
+                            Color.green
+
+                            // Shimmer overlay
+                            GeometryReader { geo in
+                                let gradient = LinearGradient(
+                                    colors: [
+                                        .clear,
+                                        .white.opacity(0.3),
+                                        .clear
+                                    ],
+                                    startPoint: .init(x: buttonShimmer - 0.3, y: 0.5),
+                                    endPoint: .init(x: buttonShimmer, y: 0.5)
+                                )
+
+                                Rectangle()
+                                    .fill(gradient)
+                                    .frame(width: geo.size.width, height: geo.size.height)
+                            }
+                        }
+                    )
+                    .foregroundStyle(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .shadow(color: .green.opacity(0.3), radius: 8, y: 4)
+                }
+                .onAppear {
+                    // Trigger shimmer once on appear
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        withAnimation(.linear(duration: 1.2)) {
+                            buttonShimmer = 1.3
+                        }
+                    }
+                }
+            } else {
+                // View Trade Order button (after execution)
+                Button(action: {
+                    showExecutionSheet = true
+                }) {
+                    HStack {
+                        Image(systemName: "doc.text")
+                            .font(.headline)
+                        Text("View Trade Order")
+                            .font(.headline)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.secondary.opacity(0.15))
+                    .foregroundStyle(.primary)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
             }
-            .padding(20)
-            .background(.ultraThinMaterial)
-            .overlay(
+        }
+        .padding(20)
+        .background(.ultraThinMaterial)
+        .overlay(
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(
                         LinearGradient(
@@ -116,13 +175,20 @@ struct AdvisorHeroCard: View {
             )
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(color: .blue.opacity(0.1), radius: 12, y: 6)
-        }
-        .buttonStyle(.plain)
-        .onAppear {
-            withAnimation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true)) {
-                isPulsing = true
+            .onAppear {
+                withAnimation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true)) {
+                    isPulsing = true
+                }
             }
-        }
+            .sheet(isPresented: $showExecutionSheet) {
+                ExecutionSheet(
+                    recommendation: recommendation,
+                    vest: vest,
+                    onOrderExecuted: {
+                        orderExecuted = true
+                    }
+                )
+            }
     }
 }
 
@@ -141,6 +207,19 @@ struct AdvisorHeroCard: View {
             recommendationText: "Hold 70%, sell 30%",
             holdPercentage: 0.70,
             sellPercentage: 0.30
+        ),
+        vest: VestEvent(
+            id: UUID(),
+            vestDate: Calendar.current.date(byAdding: .day, value: 47, to: Date())!,
+            companyName: "Steamboat Co",
+            sharesVesting: 3430,
+            ticker: "STEAMBO",
+            stockPrice: 112.18,
+            stockPriceLastUpdated: Date(),
+            estimatedValue: 384777.40,
+            advisorRecommendation: nil,
+            taxEstimate: nil,
+            timelineEvents: nil
         ),
         onTap: { print("Tapped") }
     )
