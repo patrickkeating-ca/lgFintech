@@ -367,11 +367,8 @@ struct ExecutionSheet: View {
                 executionState = .success
             }
 
-            // Show success briefly, then notify and dismiss
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                onOrderExecuted()
-                dismiss()
-            }
+            // Notify that order was executed
+            onOrderExecuted()
         }
     }
 }
