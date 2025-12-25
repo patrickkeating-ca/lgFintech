@@ -11,6 +11,7 @@ struct ExecutionSheet: View {
     @State private var spinnerRotation: Double = 0
     @State private var pulseScale: CGFloat = 1.0
     @State private var successRipple: CGFloat = 0
+    @State private var dismissing = false
 
     enum ExecutionState {
         case confirmation
@@ -339,7 +340,14 @@ struct ExecutionSheet: View {
 
             // Close button
             Button(action: {
-                dismiss()
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                    dismissing = true
+                }
+
+                // Dismiss after animation completes
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    dismiss()
+                }
             }) {
                 Text("Close")
                     .font(.headline)
@@ -352,6 +360,9 @@ struct ExecutionSheet: View {
         }
         .padding(24)
         .frame(maxWidth: 400)
+        .offset(y: dismissing ? -30 : 0)
+        .blur(radius: dismissing ? 20 : 0)
+        .opacity(dismissing ? 0 : 1)
     }
 
     // MARK: - Actions
