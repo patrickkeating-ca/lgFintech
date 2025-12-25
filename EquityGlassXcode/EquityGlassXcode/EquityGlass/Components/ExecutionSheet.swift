@@ -82,15 +82,25 @@ struct ExecutionSheet: View {
             Text("Review Your Order")
                 .font(.title2.bold())
 
-            // Vest details
+            // Execution details
             VStack(alignment: .leading, spacing: 12) {
+                Text("\(vest.sharesVesting.formatted()) shares (RSU)")
+                    .font(.headline)
+
                 HStack {
-                    Text("\(vest.sharesVesting.formatted()) shares (RSU)")
-                        .font(.headline)
-                    Spacer()
-                    Text(vest.vestDate, style: .date)
+                    Image(systemName: "calendar")
+                        .foregroundStyle(.blue)
+                    Text("Executes on \(vest.vestDate, style: .date)")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
+
+                HStack {
+                    Image(systemName: "clock")
+                        .foregroundStyle(.blue)
+                    Text("Market open")
+                        .font(.subheadline)
+                    Spacer()
                 }
             }
             .padding(16)
@@ -119,15 +129,6 @@ struct ExecutionSheet: View {
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
-
-                    HStack(spacing: 6) {
-                        Image(systemName: "chart.line.uptrend.xyaxis")
-                            .font(.caption2)
-                            .foregroundStyle(.tertiary)
-                        Text("Market order")
-                            .font(.caption)
-                            .foregroundStyle(.tertiary)
-                    }
                 }
                 .padding(16)
                 .background(Color.green.opacity(0.08))
@@ -152,15 +153,6 @@ struct ExecutionSheet: View {
                         Text("Checking Acct ...582")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-                    }
-
-                    HStack(spacing: 6) {
-                        Image(systemName: "chart.line.uptrend.xyaxis")
-                            .font(.caption2)
-                            .foregroundStyle(.tertiary)
-                        Text("Market order")
-                            .font(.caption)
-                            .foregroundStyle(.tertiary)
                     }
                 }
                 .padding(16)
