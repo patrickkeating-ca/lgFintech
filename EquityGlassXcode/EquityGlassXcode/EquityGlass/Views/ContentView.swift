@@ -63,7 +63,7 @@ struct ContentView: View {
 
                 // Advisor hero card (premium feature)
                 if let recommendation = vest.advisorRecommendation {
-                    AdvisorHeroCard(recommendation: recommendation) {
+                    AdvisorHeroCard(recommendation: recommendation, vest: vest) {
                         showConversation = true
                     }
                     .padding(.horizontal)
