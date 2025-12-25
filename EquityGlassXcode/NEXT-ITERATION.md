@@ -11,18 +11,26 @@
 **Alex (VP, $384K, Premium):**
 - Has DAF coordination with Maria (tax specialist)
 - Charitable giving strategy
+- Recommendation: 70/30 split (single execution on vest date)
 - Next Steps: "Coordinate DAF with Maria (Tax Specialist)"
 
 **Marcus (IT Manager, $67K, Standard):**
 - No tax specialist
 - No DAF
-- Next Steps: Should be different or absent
+- Different financial needs: house down payment, education fund
+- **Recommendation: Spread sales over 4 dates, 3 days apart**
+  - Hedging strategy for stock price volatility
+  - Reduces risk vs. single execution
+  - Example: 25% sell on Day 1, 25% Day 4, 25% Day 7, 25% Day 10
+  - "Hold 60%, sell 40% over time to manage price risk"
+- Next Steps: Different or absent (no DAF)
 
 **Solution:**
-- Conditional Next Steps section based on user data
-- Check if `advisorRecommendation` includes DAF mention
-- Or add tier field to user model
-- Marcus might see: "Review tax withholding in Schwab portal" instead
+- Update `scenario-marcus.json` with different recommendation strategy
+- ExecutionSheet needs to support multi-date sales schedule
+- Show calendar with 4 execution dates instead of single date
+- Next Steps section conditional on user tier
+- Marcus might see: "Review tax withholding in Schwab portal" or nothing
 
 ---
 
