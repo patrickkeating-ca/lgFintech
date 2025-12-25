@@ -85,7 +85,7 @@ struct ExecutionSheet: View {
             // Vest details
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Text("\(vest.sharesVesting.formatted()) RSU shares")
+                    Text("\(vest.sharesVesting.formatted()) shares (RSU)")
                         .font(.headline)
                     Spacer()
                     Text(vest.vestDate, style: .date)
@@ -106,7 +106,7 @@ struct ExecutionSheet: View {
                             .font(.caption.bold())
                             .foregroundStyle(.secondary)
                         Spacer()
-                        Text("\(holdShares.formatted()) RSU shares")
+                        Text("\(holdShares.formatted()) shares")
                             .font(.title3.bold())
                             .foregroundStyle(.green)
                     }
@@ -118,6 +118,15 @@ struct ExecutionSheet: View {
                         Text("Schwab Brokerage ...328")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+                    }
+
+                    HStack(spacing: 6) {
+                        Image(systemName: "chart.line.uptrend.xyaxis")
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
+                        Text("Market order")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
                     }
                 }
                 .padding(16)
@@ -131,7 +140,7 @@ struct ExecutionSheet: View {
                             .font(.caption.bold())
                             .foregroundStyle(.secondary)
                         Spacer()
-                        Text("\(sellShares.formatted()) RSU shares")
+                        Text("\(sellShares.formatted()) shares")
                             .font(.title3.bold())
                             .foregroundStyle(.blue)
                     }
@@ -144,6 +153,15 @@ struct ExecutionSheet: View {
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
+
+                    HStack(spacing: 6) {
+                        Image(systemName: "chart.line.uptrend.xyaxis")
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
+                        Text("Market order")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                    }
                 }
                 .padding(16)
                 .background(Color.blue.opacity(0.08))
@@ -151,6 +169,13 @@ struct ExecutionSheet: View {
             }
 
             Spacer()
+
+            // T&C disclaimer
+            Text("By tapping Confirm & Execute, you agree to Schwab's Terms & Conditions for equity transactions.")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 8)
 
             // Action buttons
             VStack(spacing: 12) {
@@ -319,7 +344,7 @@ struct ExecutionSheet: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Text("\(holdShares.formatted()) RSU shares")
+                    Text("\(holdShares.formatted()) shares")
                         .font(.subheadline.bold())
                 }
 
@@ -328,7 +353,7 @@ struct ExecutionSheet: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Text("\(sellShares.formatted()) RSU shares")
+                    Text("\(sellShares.formatted()) shares")
                         .font(.subheadline.bold())
                 }
             }
