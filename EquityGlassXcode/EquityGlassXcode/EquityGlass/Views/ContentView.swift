@@ -3,9 +3,11 @@ import SwiftUI
 struct ContentView: View {
     @State private var dataStore = DataStore()
     @State private var showConversation = false
+    @State private var showTimeline = false
 
     var body: some View {
-        ZStack {
+        NavigationStack {
+            ZStack {
             // Background
             Color(.systemBackground)
                 .ignoresSafeArea()
@@ -20,24 +22,38 @@ struct ContentView: View {
                 emptyView
             }
         }
+        .navigationTitle("Equity Vest")
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if let vest = dataStore.vestEvent, let events = vest.timelineEvents, !events.isEmpty {
+                    Button(action: {
+                        showTimeline = true
+                    }) {
+                        Image(systemName: "calendar")
+                            .font(.system(size: 18, weight: .semibold))
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showTimeline) {
+            if let vest = dataStore.vestEvent, let events = vest.timelineEvents {
+                TimelineSheetView(events: events)
+            }
+        }
+        }
     }
 
     func mainContent(_ vest: VestEvent) -> some View {
         ScrollView {
             VStack(spacing: 24) {
-                // App title
-                Text("Equity Vest")
-                    .font(.largeTitle.bold())
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal)
-                    .padding(.top, 20)
-
                 // Scenario picker
                 ScenarioPicker(selectedScenario: $dataStore.currentScenario) { scenario in
                     dataStore.loadScenario(scenario)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
+                .padding(.top, 8)
 
                 // Stock info header
                 StockInfoHeader(
@@ -47,15 +63,6 @@ struct ContentView: View {
                     lastUpdated: vest.stockPriceLastUpdated
                 )
                 .padding(.horizontal)
-
-                // Vest schedule overview
-                VestScheduleOverview(currentVest: vest)
-                    .padding(.horizontal)
-
-                // Timeline carousel
-                if let events = vest.timelineEvents, !events.isEmpty {
-                    TimelineCarouselView(events: events)
-                }
 
                 // Privacy blur card
                 VestCard(vest: vest)
@@ -146,6 +153,32 @@ struct ContentView: View {
                 .multilineTextAlignment(.center)
         }
         .padding(32)
+    }
+}
+
+// MARK: - Timeline Sheet View
+struct TimelineSheetView: View {
+    let events: [TimelineEvent]
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 16) {
+                    TimelineCarouselView(events: events)
+                        .padding(.top, 8)
+                }
+            }
+            .navigationTitle("Upcoming Events")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
     }
 }
 
