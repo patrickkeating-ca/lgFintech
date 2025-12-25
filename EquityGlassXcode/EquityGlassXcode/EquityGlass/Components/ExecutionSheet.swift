@@ -462,7 +462,8 @@ struct ExecutionSheet: View {
                     estimatedValue: 384777.40,
                     advisorRecommendation: nil,
                     taxEstimate: nil,
-                    timelineEvents: nil
+                    timelineEvents: nil,
+                    vestHistory: nil
                 ),
                 onOrderExecuted: { print("Order executed") }
             )

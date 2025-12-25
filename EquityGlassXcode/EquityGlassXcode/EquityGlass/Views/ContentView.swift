@@ -38,7 +38,7 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showTimeline) {
             if let vest = dataStore.vestEvent, let events = vest.timelineEvents {
-                TimelineSheetView(events: events)
+                TimelineSheetView(events: events, vestHistory: vest.vestHistory)
             }
         }
         }
@@ -159,17 +159,58 @@ struct ContentView: View {
 // MARK: - Timeline Sheet View
 struct TimelineSheetView: View {
     let events: [TimelineEvent]
+    let vestHistory: [VestHistoryItem]?
     @Environment(\.dismiss) private var dismiss
+    @State private var expandedItemId: UUID? = nil
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 16) {
-                    TimelineCarouselView(events: events)
+                VStack(spacing: 20) {
+                    // Vest History Section
+                    if let history = vestHistory, !history.isEmpty {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("VEST HISTORY")
+                                .font(.caption.bold())
+                                .foregroundStyle(.secondary)
+                                .padding(.horizontal, 16)
+
+                            VStack(spacing: 12) {
+                                ForEach(history) { item in
+                                    VestHistoryRow(
+                                        item: item,
+                                        isExpanded: expandedItemId == item.id,
+                                        onTap: {
+                                            withAnimation(.spring(response: 0.5, dampingFraction: 0.75)) {
+                                                if expandedItemId == item.id {
+                                                    expandedItemId = nil
+                                                } else {
+                                                    expandedItemId = item.id
+                                                }
+                                            }
+                                        }
+                                    )
+                                }
+                            }
+                        }
                         .padding(.top, 8)
+                    }
+
+                    // Timeline Events Section
+                    VStack(alignment: .leading, spacing: 12) {
+                        if vestHistory != nil && !vestHistory!.isEmpty {
+                            Text("UPCOMING EVENTS")
+                                .font(.caption.bold())
+                                .foregroundStyle(.secondary)
+                                .padding(.horizontal, 16)
+                        }
+
+                        TimelineCarouselView(events: events)
+                    }
                 }
+                .padding(.bottom, 16)
             }
-            .navigationTitle("Upcoming Events")
+            .navigationTitle(vestHistory != nil && !vestHistory!.isEmpty ? "Timeline & Performance" : "Upcoming Events")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -178,6 +219,180 @@ struct TimelineSheetView: View {
                     }
                 }
             }
+        }
+    }
+}
+
+// MARK: - Vest History Row (Progressive Disclosure)
+struct VestHistoryRow: View {
+    let item: VestHistoryItem
+    let isExpanded: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Collapsed state (always visible)
+            collapsedContent
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    let generator = UIImpactFeedbackGenerator(style: isExpanded ? .light : .medium)
+                    generator.impactOccurred()
+                    onTap()
+                }
+
+            // Expanded state (shows on tap)
+            if isExpanded {
+                expandedContent
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+        .padding(16)
+        .background(.regularMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .strokeBorder(.white.opacity(0.1), lineWidth: 1)
+        )
+        .shadow(
+            color: .black.opacity(isExpanded ? 0.2 : 0.05),
+            radius: isExpanded ? 16 : 4,
+            y: isExpanded ? 8 : 2
+        )
+        .scaleEffect(isExpanded ? 1.02 : 1.0)
+        .padding(.horizontal, 16)
+        .zIndex(isExpanded ? 1 : 0)
+    }
+
+    var collapsedContent: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // Date and shares
+            HStack(spacing: 8) {
+                Text(item.vestDate, format: .dateTime.month(.abbreviated).year())
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                Text("•")
+                    .foregroundStyle(.tertiary)
+
+                Text("\(item.shares) sh")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                Spacer()
+
+                // Expand indicator
+                Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+            }
+
+            // Gain/Loss label and amount
+            HStack(alignment: .firstTextBaseline, spacing: 0) {
+                Text(item.status == .sold ? "Realized Gain" : "Unrealized Gain")
+                    .font(.body)
+                    .foregroundStyle(.primary)
+
+                Spacer()
+
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("\(item.gainLoss >= 0 ? "+" : "")\(item.gainLoss, format: .currency(code: "USD").precision(.fractionLength(0)))")
+                        .font(.title3.bold())
+
+                    HStack(spacing: 4) {
+                        Text("\(item.gainLoss >= 0 ? "+" : "")\(item.gainLossPercentage, specifier: "%.1f")%")
+                            .font(.subheadline.bold())
+
+                        Image(systemName: item.status == .sold ? "checkmark" : "arrow.up.right")
+                            .font(.caption2)
+                    }
+                }
+                .foregroundStyle(item.isPositive ? .green : .red)
+            }
+        }
+    }
+
+    var expandedContent: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Divider()
+                .padding(.vertical, 4)
+
+            // Full date and status
+            HStack {
+                Text(item.vestDate, format: .dateTime.month(.wide).day().year())
+                    .font(.headline)
+
+                Spacer()
+
+                Text(item.status.rawValue.uppercased())
+                    .font(.caption.bold())
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(item.status == .sold ? Color.blue.opacity(0.15) : Color.orange.opacity(0.15))
+                    .foregroundStyle(item.status == .sold ? .blue : .orange)
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
+            }
+
+            // Details grid
+            VStack(spacing: 12) {
+                detailRow(label: "Shares Vested", value: "\(item.shares)")
+                detailRow(label: "Vest Price", value: item.vestPrice.formatted(.currency(code: "USD")))
+
+                if let currentPrice = item.currentPrice, item.status == .held {
+                    detailRow(label: "Current Price", value: currentPrice.formatted(.currency(code: "USD")))
+                    let priceChange = currentPrice - item.vestPrice
+                    let percentChange = (priceChange / item.vestPrice) * 100
+                    detailRow(
+                        label: "Price Change",
+                        value: String(format: "%@$%.2f (%@%.1f%%)",
+                                    priceChange >= 0 ? "+" : "",
+                                    abs(priceChange),
+                                    percentChange >= 0 ? "+" : "",
+                                    percentChange),
+                        highlighted: true
+                    )
+                }
+
+                if let soldPrice = item.soldPrice, let soldDate = item.soldDate, item.status == .sold {
+                    detailRow(label: "Sale Price", value: soldPrice.formatted(.currency(code: "USD")))
+                    detailRow(label: "Sold On", value: soldDate.formatted(.dateTime.month(.wide).day().year()))
+                    let priceChange = soldPrice - item.vestPrice
+                    let percentChange = (priceChange / item.vestPrice) * 100
+                    detailRow(
+                        label: "Price Change",
+                        value: String(format: "%@$%.2f (%@%.1f%%)",
+                                    priceChange >= 0 ? "+" : "",
+                                    abs(priceChange),
+                                    percentChange >= 0 ? "+" : "",
+                                    percentChange),
+                        highlighted: true
+                    )
+                }
+            }
+
+            // Lot number if available
+            if let lotNumber = item.lotNumber {
+                Divider()
+
+                detailRow(label: "Lot #", value: lotNumber)
+
+                if item.status == .held {
+                    detailRow(label: "Held Since", value: item.vestDate.formatted(.dateTime.month(.wide).day().year()))
+                }
+            }
+        }
+    }
+
+    func detailRow(label: String, value: String, highlighted: Bool = false) -> some View {
+        HStack {
+            Text(label)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            Spacer()
+
+            Text(value)
+                .font(highlighted ? .subheadline.bold() : .subheadline)
+                .foregroundStyle(highlighted ? (item.isPositive ? .green : .red) : .primary)
         }
     }
 }

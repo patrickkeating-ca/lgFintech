@@ -209,7 +209,8 @@ struct SplitVisualization: View {
                 sellPercentage: 0.30
             ),
             taxEstimate: nil,
-            timelineEvents: nil
+            timelineEvents: nil,
+            vestHistory: nil
         ),
         onShowConversation: { print("Show conversation") }
     )

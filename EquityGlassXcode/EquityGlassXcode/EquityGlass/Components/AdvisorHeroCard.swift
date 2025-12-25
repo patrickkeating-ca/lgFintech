@@ -219,7 +219,8 @@ struct AdvisorHeroCard: View {
             estimatedValue: 384777.40,
             advisorRecommendation: nil,
             taxEstimate: nil,
-            timelineEvents: nil
+            timelineEvents: nil,
+            vestHistory: nil
         ),
         onTap: { print("Tapped") }
     )

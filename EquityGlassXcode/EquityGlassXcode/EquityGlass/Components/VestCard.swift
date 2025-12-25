@@ -105,7 +105,8 @@ struct VestCard: View {
         estimatedValue: 578963.9,
         advisorRecommendation: nil,
         taxEstimate: nil,
-        timelineEvents: nil
+        timelineEvents: nil,
+        vestHistory: nil
     ))
     .padding()
 }

@@ -35,6 +35,28 @@
     "ficaTax": 5771.66,
     "ficaRate": 0.015
   },
+  "vestHistory": [
+    {
+      "id": "5d2790f2-e343-480f-bf3c-c2dcdd1b0148",
+      "vestDate": "2025-02-15T09:00:00Z",
+      "shares": 2400,
+      "vestPrice": 99.65,
+      "currentPrice": 112.18,
+      "soldPrice": null,
+      "soldDate": null,
+      "lotNumber": "RSU-2025-Q1-001"
+    },
+    {
+      "id": "a93e313c-6765-4dac-8717-efc4a59ce347",
+      "vestDate": "2024-11-15T09:00:00Z",
+      "shares": 1200,
+      "vestPrice": 95.20,
+      "currentPrice": null,
+      "soldPrice": 102.07,
+      "soldDate": "2024-12-10T14:30:00Z",
+      "lotNumber": "RSU-2024-Q4-003"
+    }
+  ],
   "timelineEvents": [
     {
       "id": "E1A2B3C4-D5E6-4F7A-8B9C-0D1E2F3A4B5C",

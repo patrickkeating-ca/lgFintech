@@ -54,7 +54,7 @@ struct StockInfoHeader: View {
 #Preview {
     StockInfoHeader(
         companyName: "Steamboat Co",
-        ticker: "STEAMBO",
+        ticker: "STBT",
         stockPrice: 112.18,
         lastUpdated: Calendar.current.date(byAdding: .hour, value: -3, to: Date())!
     )
