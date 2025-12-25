@@ -3,6 +3,7 @@ import SwiftUI
 struct ExecutionSheet: View {
     let recommendation: AdvisorRecommendation
     let vest: VestEvent
+    let onOrderExecuted: () -> Void
     @Environment(\.dismiss) var dismiss
 
     @State private var executionState: ExecutionState = .confirmation
@@ -77,14 +78,8 @@ struct ExecutionSheet: View {
     var confirmationView: some View {
         VStack(spacing: 24) {
             // Header
-            VStack(spacing: 8) {
-                Text("Execute Fred's Plan")
-                    .font(.title2.bold())
-
-                Text("Review your order")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
+            Text("Review Your Order")
+                .font(.title2.bold())
 
             // Vest details
             VStack(alignment: .leading, spacing: 12) {
@@ -92,14 +87,10 @@ struct ExecutionSheet: View {
                     Text("\(vest.sharesVesting.formatted()) shares")
                         .font(.headline)
                     Spacer()
-                    Text("@ $\(vest.stockPrice, specifier: "%.2f")")
-                        .font(.headline)
+                    Text(vest.vestDate, style: .date)
+                        .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
-
-                Text("Est. total: \(vest.estimatedValue, format: .currency(code: "USD"))")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
             }
             .padding(16)
             .background(.regularMaterial)
@@ -108,24 +99,23 @@ struct ExecutionSheet: View {
             // Split breakdown
             VStack(spacing: 12) {
                 // Hold
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
                         Text("HOLD")
                             .font(.caption.bold())
                             .foregroundStyle(.secondary)
+                        Spacer()
                         Text("\(holdShares.formatted()) shares")
                             .font(.title3.bold())
                             .foregroundStyle(.green)
                     }
 
-                    Spacer()
-
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text("ESTIMATE")
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.right")
                             .font(.caption2)
                             .foregroundStyle(.tertiary)
-                        Text(estimatedHoldValue, format: .currency(code: "USD"))
-                            .font(.headline)
+                        Text("Schwab Brokerage ...328")
+                            .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -134,24 +124,23 @@ struct ExecutionSheet: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 // Sell
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
                         Text("SELL")
                             .font(.caption.bold())
                             .foregroundStyle(.secondary)
+                        Spacer()
                         Text("\(sellShares.formatted()) shares")
                             .font(.title3.bold())
                             .foregroundStyle(.blue)
                     }
 
-                    Spacer()
-
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text("ESTIMATE")
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.right")
                             .font(.caption2)
                             .foregroundStyle(.tertiary)
-                        Text(estimatedSellValue, format: .currency(code: "USD"))
-                            .font(.headline)
+                        Text("Checking Acct ...582")
+                            .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -159,24 +148,6 @@ struct ExecutionSheet: View {
                 .background(Color.blue.opacity(0.08))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
-
-            // Disclaimer
-            VStack(alignment: .leading, spacing: 8) {
-                HStack(spacing: 6) {
-                    Image(systemName: "info.circle.fill")
-                        .font(.caption)
-                    Text("Market Order")
-                        .font(.caption.bold())
-                }
-                .foregroundStyle(.orange)
-
-                Text("Final value determined at market execution on \(vest.vestDate, style: .date). Estimates based on current price of $\(vest.stockPrice, specifier: "%.2f").")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(12)
-            .background(Color.orange.opacity(0.08))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
 
             Spacer()
 
@@ -395,6 +366,12 @@ struct ExecutionSheet: View {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
                 executionState = .success
             }
+
+            // Show success briefly, then notify and dismiss
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                onOrderExecuted()
+                dismiss()
+            }
         }
     }
 }
@@ -432,7 +409,8 @@ struct ExecutionSheet: View {
                     advisorRecommendation: nil,
                     taxEstimate: nil,
                     timelineEvents: nil
-                )
+                ),
+                onOrderExecuted: { print("Order executed") }
             )
         }
 }

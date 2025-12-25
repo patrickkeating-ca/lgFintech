@@ -7,6 +7,7 @@ struct AdvisorHeroCard: View {
     @State private var isPulsing = false
     @State private var showExecutionSheet = false
     @State private var buttonShimmer: CGFloat = -1.0
+    @State private var orderExecuted = false
 
     var body: some View {
         VStack(spacing: 16) {
@@ -89,50 +90,70 @@ struct AdvisorHeroCard: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Execute Plan button with shimmer
-            Button(action: {
-                showExecutionSheet = true
-            }) {
-                HStack {
-                    Image(systemName: "bolt.fill")
-                        .font(.headline)
-                    Text("Execute Plan")
-                        .font(.headline)
+            // Execute/View button
+            if !orderExecuted {
+                // Execute Plan button with shimmer
+                Button(action: {
+                    showExecutionSheet = true
+                }) {
+                    HStack {
+                        Image(systemName: "bolt.fill")
+                            .font(.headline)
+                        Text("Execute Plan")
+                            .font(.headline)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        ZStack {
+                            Color.green
+
+                            // Shimmer overlay
+                            GeometryReader { geo in
+                                let gradient = LinearGradient(
+                                    colors: [
+                                        .clear,
+                                        .white.opacity(0.3),
+                                        .clear
+                                    ],
+                                    startPoint: .init(x: buttonShimmer - 0.3, y: 0.5),
+                                    endPoint: .init(x: buttonShimmer, y: 0.5)
+                                )
+
+                                Rectangle()
+                                    .fill(gradient)
+                                    .frame(width: geo.size.width, height: geo.size.height)
+                            }
+                        }
+                    )
+                    .foregroundStyle(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .shadow(color: .green.opacity(0.3), radius: 8, y: 4)
                 }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(
-                    ZStack {
-                        Color.green
-
-                        // Shimmer overlay
-                        GeometryReader { geo in
-                            let gradient = LinearGradient(
-                                colors: [
-                                    .clear,
-                                    .white.opacity(0.3),
-                                    .clear
-                                ],
-                                startPoint: .init(x: buttonShimmer - 0.3, y: 0.5),
-                                endPoint: .init(x: buttonShimmer, y: 0.5)
-                            )
-
-                            Rectangle()
-                                .fill(gradient)
-                                .frame(width: geo.size.width, height: geo.size.height)
+                .onAppear {
+                    // Trigger shimmer once on appear
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        withAnimation(.linear(duration: 1.2)) {
+                            buttonShimmer = 1.3
                         }
                     }
-                )
-                .foregroundStyle(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .shadow(color: .green.opacity(0.3), radius: 8, y: 4)
-            }
-            .onAppear {
-                // Trigger shimmer once on appear
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    withAnimation(.linear(duration: 1.2)) {
-                        buttonShimmer = 1.3
+                }
+            } else {
+                // View Trade Order button (after execution)
+                Button(action: {
+                    showExecutionSheet = true
+                }) {
+                    HStack {
+                        Image(systemName: "doc.text")
+                            .font(.headline)
+                        Text("View Trade Order")
+                            .font(.headline)
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.secondary.opacity(0.15))
+                    .foregroundStyle(.primary)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
             }
         }
@@ -160,7 +181,13 @@ struct AdvisorHeroCard: View {
                 }
             }
             .sheet(isPresented: $showExecutionSheet) {
-                ExecutionSheet(recommendation: recommendation, vest: vest)
+                ExecutionSheet(
+                    recommendation: recommendation,
+                    vest: vest,
+                    onOrderExecuted: {
+                        orderExecuted = true
+                    }
+                )
             }
     }
 }
