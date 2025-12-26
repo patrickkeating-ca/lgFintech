@@ -642,7 +642,7 @@
                     <div class="timeline-content">
                         <div class="timeline-label">Vest Date</div>
                         <div class="timeline-value">Feb 6, 2026</div>
-                        <div class="timeline-description">Shares vest & sell executes • Funds available same day</div>
+                        <div class="timeline-description">3,430 shares vest and become yours</div>
                     </div>
                 </div>
 
@@ -655,9 +655,21 @@
                         <path d="M8 14l2 2 4-4" stroke="#666" stroke-width="2"/>
                     </svg>
                     <div class="timeline-content">
-                        <div class="timeline-label">Cancellation Window</div>
-                        <div class="timeline-value">Until Feb 13, 2026</div>
-                        <div class="timeline-description">Modify or cancel anytime before this date</div>
+                        <div class="timeline-label">Modify/Cancel Deadline</div>
+                        <div class="timeline-value">Feb 13, 2026</div>
+                        <div class="timeline-description">Last day to change or cancel plan</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <svg class="timeline-icon" viewBox="0 0 24 24" fill="none" stroke="#00C805" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <div class="timeline-content">
+                        <div class="timeline-label">Execution Date</div>
+                        <div class="timeline-value">Feb 27, 2026</div>
+                        <div class="timeline-description">Fred executes sell • Funds available same day</div>
                     </div>
                 </div>
             </div>
@@ -679,7 +691,7 @@
 
         <!-- Authority Notice & Execute Button -->
         <div class="authority-notice">
-            You are authorizing Fred to execute this plan on your behalf on Feb 6. You can modify or cancel until Feb 13.
+            You are authorizing Fred to execute this plan on your behalf on Feb 27. You can modify or cancel until Feb 13.
         </div>
         <button class="execute-btn" onclick="executeVest()">Approve Plan</button>
 
@@ -750,7 +762,7 @@
                 </div>
                 <div class="modal-item">
                     <div class="modal-item-label">Execution Date</div>
-                    <div class="modal-item-value">Feb 6, 2026</div>
+                    <div class="modal-item-value">Feb 27, 2026</div>
                 </div>
             </div>
 
@@ -758,7 +770,7 @@
             <div class="modal-section">
                 <div class="modal-section-title">What Happens Next</div>
                 <div class="modal-disclaimer" style="margin-top: 0; padding: 12px; background: #0d0d0d; border-radius: 6px;">
-                    Fred will execute this plan on your behalf on Feb 6, 2026. By authorizing, you are putting this plan in motion.
+                    Fred will execute this plan on your behalf on Feb 27, 2026. By authorizing, you are putting this plan in motion.
                 </div>
             </div>
 
@@ -792,6 +804,11 @@
                 <div class="modal-disclaimer">
                     <strong>If cancelled:</strong> All 3,430 shares will be held in your brokerage account (100% hold).
                 </div>
+            </div>
+
+            <!-- Terms & Conditions -->
+            <div class="modal-disclaimer" style="margin-top: 20px; padding: 10px; background: transparent; border-top: 1px solid #2a2a2a; text-align: center;">
+                By confirming, you agree to Schwab's <a href="#" style="color: #00C805; text-decoration: none;">Terms & Conditions</a> and authorize this transaction.
             </div>
 
             <button class="modal-close-btn" onclick="confirmAuthorization()">Confirm Authorization</button>
@@ -915,7 +932,7 @@
 
         function confirmAuthorization() {
             closeApprovalModal();
-            alert('Authorization Confirmed!\n\n✓ Plan authorized and submitted to Fred\n✓ Fred will execute on Feb 6, 2026\n✓ You can modify or cancel until Feb 13\n\nYou will receive a confirmation email with plan details.');
+            alert('Authorization Confirmed!\n\n✓ Plan authorized and submitted to Fred\n✓ Fred will execute on Feb 27, 2026\n✓ You can modify or cancel until Feb 13\n\nYou will receive a confirmation email with plan details.');
         }
 
         function requestChanges() {
