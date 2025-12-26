@@ -52,13 +52,13 @@ On the plane, late at night, eyes don't get blown apart. **Table stakes, but you
 
 ## What's Still BS ❌
 
-### Fred's Avatar = Still Placeholder
-**First thing I see on advisor card, and it's a generic "F" circle.**
-- You added a real photo to the assets (I can tell from the code)
-- Why isn't it showing?
-- For $1B client demo, this screams "we rushed this"
+### Fred's Photo - Actually Good Now ✅
+**Correction: Fred's photo IS showing.**
+- Professional advisor headshot
+- Looks legitimate, premium
+- This is what I wanted
 
-**Fix this.** Real photo = legitimacy. Placeholder = prototype.
+**Scratch this complaint.** Photo is there and looks good.
 
 ### Timeline Still Shows 12 Events
 I said: **"Do I care about September when February is 48 days away?"**
@@ -147,22 +147,22 @@ I don't have the answer, but you're right to question it.
 
 **You fixed the execution problem.** The "Execute Plan" button is exactly what I wanted.
 
-**But you lost some polish:**
-- Fred's avatar went from "gradient placeholder" to... "still placeholder but now we have a real photo sitting unused"
+**Some polish items remain:**
 - Timeline is still 12 events when I asked for 3
 - Scroll depth to Execute didn't improve (timeline still in the way)
+- No P&L from previous vest
 
 **For demo:** You can show instant execution now. That's huge.
 
-**For $1B client:** Fix Fred's photo, cut the timeline, tighten the cards.
+**For $1B client:** Cut the timeline, add P&L badge, tighten the cards.
 
 ---
 
 ## Quick Wins Before Demo
 
-1. **Show Fred's real photo** - it's already in assets, just use it
-2. **Timeline: Next 3 events only** - "View All" link if needed
-3. **Consider moving timeline below execution** - put the meat first
-4. **P&L badge** - "Last vest: +12.3%" somewhere visible
+1. **Timeline: Next 3 events only** - "View All" link if needed
+2. **Consider moving timeline below execution** - put the meat first
+3. **P&L badge** - "Last vest: +12.3%" somewhere visible
+4. **Tighten card layout** - make vest → recommendation → execute feel like one story
 
 **Execution flow is solid.** Now make the journey to that button premium.

@@ -131,8 +131,16 @@
 ## 4. Other Polish Items
 
 **From critique:**
-- [ ] Fred's avatar: Replace placeholder with stock photo
-- [ ] P&L from previous vest: Show track record
+- [x] Fred's avatar: Real photo showing ✅
+- [ ] **P&L badge from previous vest: Show track record**
+  - "Last vest: +12.3%" or similar
+  - Build trust through results
+  - Could be on VestCard or StockInfoHeader
+  - Robinhood/Fidelity always show gain/loss
+  - Placement options:
+    - Badge on VestCard: "Previous vest: +$47,203 (+12.3%)"
+    - Small card above current vest
+    - Icon + percentage in stock header area
 - [ ] Timeline: Focus on next 3 events, not all 12
 - [ ] Calendar badge: Wire up or remove (currently visual only)
 
@@ -143,6 +151,25 @@
 - [ ] Ambient lighting on cards
 
 ---
+
+If it were schwab's app there's a place at the bottom for fixed navigation. Is there any other 
+place we could add nav (such as timeline) so it's not prominent? Concise. Don't do, answer 
+question. Is that an iOS option or build your own? 
+
+⏺ iOS Standard Options:
+
+  1. TabBar (bottom fixed) - Native iOS, most common for app-level navigation
+  2. NavigationBar trailing button - Native iOS, icon in top-right that opens timeline as sheet/modal
+  3. ToolBar (bottom contextual) - Native iOS, similar to TabBar but context-specific
+  4. Sheet presentation - Native iOS, button anywhere opens timeline as bottom sheet
+
+  For Timeline Specifically:
+
+  Best iOS-native option: NavigationBar trailing button (calendar icon top-right) that presents timeline as sheet. This:
+  - Keeps timeline accessible but not prominent
+  - Follows iOS patterns (Mail, Calendar apps do this)
+  - No custom code needed - navigationBarItems(trailing:) + .sheet()
+
 
 ## Summary
 
