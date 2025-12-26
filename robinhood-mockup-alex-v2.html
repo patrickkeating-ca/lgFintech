@@ -607,18 +607,12 @@
     <div class="vest-action-card">
         <!-- Vest Info -->
         <div class="vest-label">Upcoming Vest</div>
-        <div class="vest-amount-row">
-            <div class="vest-shares-main" onclick="showVestDetails()">3,430 shares</div>
-            <div class="vest-date">Feb 6</div>
-        </div>
-        <div class="vest-days">48 days</div>
-        <div class="vest-tap-hint">Tap for estimated value and tax</div>
+        <div class="vest-shares-main" onclick="showVestDetails()" style="text-align: center; margin-top: 8px;">3,430 shares</div>
+        <div class="vest-date" style="text-align: center; margin-top: 8px;">Vest Date: Feb 6 (48 days)</div>
+        <div class="vest-tap-hint" style="text-align: center;">Tap for estimated value and tax</div>
 
         <!-- Divider -->
         <div class="plan-divider"></div>
-
-        <!-- Fred's Plan -->
-        <div class="plan-label">Fred's Plan</div>
 
         <!-- Execution Timeline (Collapsible) -->
         <div class="execution-timeline" onclick="toggleExecutionTimeline()">
@@ -662,6 +656,19 @@
                 </div>
 
                 <div class="timeline-item">
+                    <svg class="timeline-icon" viewBox="0 0 24 24" fill="none" stroke="#ff9500" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <div class="timeline-content">
+                        <div class="timeline-label">Blackout Period</div>
+                        <div class="timeline-value">Feb 17-18, 2026</div>
+                        <div class="timeline-description">Trading restricted (earnings/announcements)</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
                     <svg class="timeline-icon" viewBox="0 0 24 24" fill="none" stroke="#00C805" stroke-width="2">
                         <circle cx="12" cy="12" r="10"/>
                         <polyline points="12 6 12 12 16 14"/>
@@ -674,6 +681,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- Trade Plan Recommendation -->
+        <div class="plan-label">Trade Plan Recommendation</div>
 
         <!-- Split Preview -->
         <div class="split-preview">
@@ -748,7 +758,7 @@
 
             <!-- Plan Summary -->
             <div class="modal-section">
-                <div class="modal-section-title">Fred's Plan</div>
+                <div class="modal-section-title">Trade Plan Recommendation</div>
                 <div class="modal-item">
                     <div class="modal-item-label">Hold</div>
                     <div class="modal-item-value">2,401 shares → Portfolio</div>
