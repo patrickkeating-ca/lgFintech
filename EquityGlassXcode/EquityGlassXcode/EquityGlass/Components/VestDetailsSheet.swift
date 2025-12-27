@@ -3,6 +3,7 @@ import SwiftUI
 struct VestDetailsSheet: View {
     let vest: VestEvent
     @Environment(\.dismiss) var dismiss
+    @State private var showValueRange = false
 
     var body: some View {
         NavigationStack {
@@ -59,6 +60,26 @@ struct VestDetailsSheet: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(Color.secondary.opacity(0.1))
                             .clipShape(RoundedRectangle(cornerRadius: 8))
+
+                        // Value range explorer link
+                        Button(action: {
+                            showValueRange = true
+                        }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "chart.xyaxis.line")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.blue)
+                                Text("See value range")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.blue)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundStyle(.blue)
+                            }
+                            .padding(.vertical, 8)
+                        }
+                        .buttonStyle(.plain)
                     }
 
                     // Tax withholding section
@@ -162,6 +183,9 @@ struct VestDetailsSheet: View {
         }
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
+        .sheet(isPresented: $showValueRange) {
+            ValueRangeSheet(vest: vest)
+        }
     }
 }
 
