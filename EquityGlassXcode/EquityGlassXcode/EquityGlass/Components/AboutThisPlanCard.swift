@@ -110,6 +110,7 @@ struct AboutThisPlanCard: View {
             advisorCredentials: "CFP®",
             advisorCompany: "Schwab Private Client",
             advisorPhone: "(650) 555-1212",
+            advisorPhotoAsset: "AdvisorAvatar",
             conversationDate: Calendar.current.date(byAdding: .day, value: -4, to: Date())!,
             conversationDuration: 22,
             discussionPoints: [

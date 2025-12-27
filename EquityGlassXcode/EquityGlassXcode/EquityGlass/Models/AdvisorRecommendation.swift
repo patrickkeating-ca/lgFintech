@@ -7,6 +7,7 @@ struct AdvisorRecommendation: Codable {
     let advisorCredentials: String?
     let advisorCompany: String?
     let advisorPhone: String?
+    let advisorPhotoAsset: String? // Asset name for advisor photo (e.g., "AdvisorAvatar", "SofiaPatelAvatar")
     let conversationDate: Date
     let conversationDuration: Int // minutes
     let discussionPoints: [String]

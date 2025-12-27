@@ -38,18 +38,42 @@ struct AdvisorContactCard: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Divider()
 
-                    // Title and company
-                    VStack(alignment: .leading, spacing: 4) {
-                        if let title = recommendation.advisorTitle {
-                            Text(title)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
+                    // Photo with title and company
+                    HStack(alignment: .top, spacing: 12) {
+                        // Advisor photo
+                        Group {
+                            if let photoAsset = recommendation.advisorPhotoAsset {
+                                Image(photoAsset)
+                                    .resizable()
+                                    .scaledToFill()
+                            } else {
+                                // Fallback to system icon if no photo provided
+                                Image(systemName: "person.circle.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundStyle(.secondary)
+                            }
                         }
+                        .frame(width: 64, height: 64)
+                        .clipShape(Circle())
+                        .overlay(
+                            Circle()
+                                .strokeBorder(Color.secondary.opacity(0.2), lineWidth: 1)
+                        )
 
-                        if let company = recommendation.advisorCompany {
-                            Text(company)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
+                        // Title and company
+                        VStack(alignment: .leading, spacing: 4) {
+                            if let title = recommendation.advisorTitle {
+                                Text(title)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                            }
+
+                            if let company = recommendation.advisorCompany {
+                                Text(company)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                     }
 
@@ -77,7 +101,7 @@ struct AdvisorContactCard: View {
                         // Phone button (premium tier only)
                         if let phone = recommendation.advisorPhone {
                             Button(action: {
-                                if let url = URL(string: "tel:\(phone.filter { $0.isNumber })") {
+                                if URL(string: "tel:\(phone.filter { $0.isNumber })") != nil {
                                     // This would open the phone dialer in a real app
                                     print("Calling \(phone)")
                                 }
@@ -129,7 +153,7 @@ struct AdvisorContactCard: View {
 
 #Preview {
     VStack(spacing: 20) {
-        // Premium tier (Alex - has phone)
+        // Premium tier (Alex - has phone and photo)
         AdvisorContactCard(
             recommendation: AdvisorRecommendation(
                 advisorName: "Fred",
@@ -138,6 +162,7 @@ struct AdvisorContactCard: View {
                 advisorCredentials: "CFP®",
                 advisorCompany: "Schwab Private Client",
                 advisorPhone: "(650) 555-1212",
+                advisorPhotoAsset: "AdvisorAvatar",
                 conversationDate: Date(),
                 conversationDuration: 22,
                 discussionPoints: [],
@@ -147,7 +172,7 @@ struct AdvisorContactCard: View {
             )
         )
 
-        // Standard tier (Marcus - no phone)
+        // Standard tier (Marcus - no phone, will have SofiaPatelAvatar when photo added)
         AdvisorContactCard(
             recommendation: AdvisorRecommendation(
                 advisorName: "Sofia",
@@ -156,6 +181,7 @@ struct AdvisorContactCard: View {
                 advisorCredentials: nil,
                 advisorCompany: "Schwab",
                 advisorPhone: nil,
+                advisorPhotoAsset: nil, // TODO: Add "SofiaPatelAvatar" when asset is ready
                 conversationDate: Date(),
                 conversationDuration: 18,
                 discussionPoints: [],

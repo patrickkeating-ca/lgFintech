@@ -441,6 +441,7 @@ struct ExecutionSheet: View {
                     advisorCredentials: "CFP®",
                     advisorCompany: "Schwab Private Client",
                     advisorPhone: "(650) 555-1212",
+                    advisorPhotoAsset: "AdvisorAvatar",
                     conversationDate: Date(),
                     conversationDuration: 22,
                     discussionPoints: [

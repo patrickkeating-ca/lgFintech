@@ -77,7 +77,7 @@ struct AdvisorConversationView: View {
                 // Call button (premium clients only)
                 if let phone = recommendation.advisorPhone {
                     Button(action: {
-                        if let url = URL(string: "tel://\(phone.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "-", with: ""))") {
+                        if URL(string: "tel://\(phone.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "-", with: ""))") != nil {
                             // In real app: UIApplication.shared.open(url)
                             print("Call \(phone)")
                         }
@@ -157,6 +157,7 @@ struct AdvisorConversationView: View {
                 advisorCredentials: "CFP®",
                 advisorCompany: "Schwab Private Client",
                 advisorPhone: "(650) 555-1212",
+                advisorPhotoAsset: "AdvisorAvatar",
                 conversationDate: Date(),
                 conversationDuration: 22,
                 discussionPoints: [

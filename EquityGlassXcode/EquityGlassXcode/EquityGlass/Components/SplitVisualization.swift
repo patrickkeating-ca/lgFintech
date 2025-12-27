@@ -196,6 +196,7 @@ struct SplitVisualization: View {
                 advisorCredentials: "CFP®",
                 advisorCompany: "Schwab Private Client",
                 advisorPhone: nil,
+                advisorPhotoAsset: "AdvisorAvatar",
                 conversationDate: Date(),
                 conversationDuration: 22,
                 discussionPoints: [

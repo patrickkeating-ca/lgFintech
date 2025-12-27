@@ -8,11 +8,12 @@
   "stockPriceLastUpdated": "2025-12-22T10:00:00Z",
   "estimatedValue": 67308.00,
   "advisorRecommendation": {
-    "advisorName": "Fred",
-    "advisorFullName": "Fred Amsden",
-    "advisorTitle": "Senior Wealth Advisor",
-    "advisorCredentials": "CFP®",
-    "advisorCompany": "Schwab Private Client",
+    "advisorName": "Sofia",
+    "advisorFullName": "Sofia Patel",
+    "advisorTitle": "Financial Advisor",
+    "advisorCredentials": null,
+    "advisorCompany": "Schwab",
+    "advisorPhotoAsset": "SofiaPatelAvatar",
     "conversationDate": "2025-12-18T14:30:00Z",
     "conversationDuration": 28,
     "discussionPoints": [
@@ -62,7 +63,7 @@
       "id": "F1A2B3C4-D5E6-4F7A-8B9C-0D1E2F3A4B5C",
       "date": "2026-01-20T14:00:00Z",
       "type": "advisorMeeting",
-      "title": "January Check-in with Fred",
+      "title": "January Check-in with Sofia",
       "description": "Review prep checklist: house down payment needs, PSU risk tolerance, RSU diversification",
       "actionable": true
     },
@@ -79,7 +80,7 @@
       "date": "2026-02-06T09:00:00Z",
       "type": "vest",
       "title": "PSU Vest: 600 shares",
-      "description": "Consider 60/40 split per Fred's guidance. Decide on house down payment allocation.",
+      "description": "Consider 60/40 split per Sofia's guidance. Decide on house down payment allocation.",
       "actionable": true
     },
     {
