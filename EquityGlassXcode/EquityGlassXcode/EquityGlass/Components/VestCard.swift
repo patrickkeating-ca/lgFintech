@@ -19,24 +19,28 @@ struct VestCard: View {
                 .frame(maxWidth: .infinity, alignment: .center)
 
             // Vest date with countdown
-            HStack(spacing: 4) {
-                Text("Vest Date:")
-                    .font(.body)
-                    .foregroundStyle(.secondary)
-                Text(vest.vestDate, format: .dateTime.month(.abbreviated).day())
-                    .font(.body.bold())
+            HStack(alignment: .top) {
+                Text("Vest Date")
+                    .font(.subheadline)
                     .foregroundStyle(.primary)
-                Text("(\(vest.daysUntilVest) days)")
-                    .font(.body)
-                    .foregroundStyle(.secondary)
+
+                Spacer()
+
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text(vest.vestDate, format: .dateTime.month(.abbreviated).day().year())
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Text("(\(vest.daysUntilVest) days)")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
 
             // Tap hint
-            Text("Tap for estimated value and tax")
+            Text("Tap for estimated value & tax")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .center)
         }
         .padding(20)
         .background(.ultraThinMaterial)

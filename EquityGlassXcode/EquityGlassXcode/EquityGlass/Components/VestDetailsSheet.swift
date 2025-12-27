@@ -123,9 +123,9 @@ struct VestDetailsSheet: View {
 
                                 Divider()
 
-                                // Net after taxes
+                                // Net value
                                 HStack {
-                                    Text("Estimated Net After Taxes")
+                                    Text("Estimated Net Value")
                                         .font(.body.bold())
                                         .foregroundStyle(.primary)
                                     Spacer()
@@ -146,20 +146,6 @@ struct VestDetailsSheet: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
                     }
-
-                    // Got It button
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        Text("Got It")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(.blue)
-                            .foregroundStyle(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                    }
-                    .padding(.top, 8)
                 }
                 .padding(20)
             }
