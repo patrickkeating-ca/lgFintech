@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TradeRecommendationCard: View {
     let vest: VestEvent
+    @State private var isExpanded = false
 
     var body: some View {
         // Liquid Glass backdrop
@@ -93,6 +94,62 @@ struct TradeRecommendationCard: View {
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
+
+                // Why this recommendation (expandable)
+                if let recommendation = vest.advisorRecommendation {
+                    VStack(alignment: .leading, spacing: 12) {
+                        // Toggle button
+                        Button(action: {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                isExpanded.toggle()
+                            }
+                        }) {
+                            HStack {
+                                Text("Why this recommendation")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                            }
+                            .padding(.vertical, 8)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+
+                        // Expanded content
+                        if isExpanded {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Divider()
+
+                                // Recommendation text
+                                Text(recommendation.recommendationText)
+                                    .font(.body)
+                                    .foregroundStyle(.primary)
+
+                                // Discussion points
+                                if !recommendation.discussionPoints.isEmpty {
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        ForEach(recommendation.discussionPoints, id: \.self) { point in
+                                            HStack(alignment: .top, spacing: 8) {
+                                                Text("•")
+                                                    .font(.body)
+                                                    .foregroundStyle(.secondary)
+                                                Text(point)
+                                                    .font(.subheadline)
+                                                    .foregroundStyle(.secondary)
+                                            }
+                                        }
+                                    }
+                                    .padding(.top, 4)
+                                }
+                            }
+                            .transition(.opacity.combined(with: .move(edge: .top)))
+                        }
+                    }
+                }
             }
             .padding(20)
             .background(.ultraThinMaterial)
@@ -107,6 +164,7 @@ struct TradeRecommendationCard: View {
                     startPoint: .top,
                     endPoint: .bottom
                 )
+                .allowsHitTesting(false)
             )
             .overlay(
                 // Premium border treatment with gradient
@@ -124,14 +182,13 @@ struct TradeRecommendationCard: View {
                         ),
                         lineWidth: 1
                     )
+                    .allowsHitTesting(false)
             )
             .clipShape(RoundedRectangle(cornerRadius: 24))
             // Enhanced shadow for elevated depth
             .shadow(color: Color.primary.opacity(0.08), radius: 8, y: 4)
             .shadow(color: Color.primary.opacity(0.12), radius: 16, y: 8)
         }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Trade plan recommendation. Hold \(vest.holdShares) shares to portfolio. Sell \(vest.sellShares) shares to checking account.")
     }
 }
 
@@ -156,8 +213,13 @@ struct TradeRecommendationCard: View {
                 advisorPhotoAsset: "AdvisorAvatar",
                 conversationDate: Date(),
                 conversationDuration: 22,
-                discussionPoints: [],
-                recommendationText: "Execute 70/30 split",
+                discussionPoints: [
+                    "Tax withholding strategy and timing",
+                    "Charitable giving coordination for Q1",
+                    "Diversification and concentration risk management",
+                    "70/30 split balances tax efficiency and long-term growth"
+                ],
+                recommendationText: "Hold 70% for diversified portfolio, sell 30% for tax withholding and charitable giving",
                 holdPercentage: 0.70,
                 sellPercentage: 0.30
             ),

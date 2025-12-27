@@ -4,7 +4,6 @@ import SwiftUI
 /// This demonstrates the advisor conversation context feature - the differentiating element for Disney pitch
 struct VestExecutionDemoView: View {
     @State private var dataStore = DataStore()
-    @State private var showConversationModal = false
     @State private var showVestDetailsModal = false
     @State private var showApprovalSheet = false
     @State private var planApproved = false
@@ -30,16 +29,6 @@ struct VestExecutionDemoView: View {
                                     showVestDetailsModal = true
                                 }
                             )
-
-                            // Sprint 1: About This Plan Card
-                            if let recommendation = vest.advisorRecommendation {
-                                AboutThisPlanCard(
-                                    recommendation: recommendation,
-                                    onTapAttribution: {
-                                        showConversationModal = true
-                                    }
-                                )
-                            }
 
                             // Sprint 3: Execution Timeline
                             ExecutionTimelineCard(vest: vest)
@@ -103,11 +92,6 @@ struct VestExecutionDemoView: View {
             }
             .navigationTitle("Vest Execution (Sprint 1-5)")
             .navigationBarTitleDisplayMode(.inline)
-            .sheet(isPresented: $showConversationModal) {
-                if let recommendation = dataStore.vestEvent?.advisorRecommendation {
-                    AdvisorConversationView(recommendation: recommendation)
-                }
-            }
             .sheet(isPresented: $showVestDetailsModal) {
                 if let vest = dataStore.vestEvent {
                     VestDetailsSheet(vest: vest)
