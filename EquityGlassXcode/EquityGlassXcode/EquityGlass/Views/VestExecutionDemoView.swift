@@ -6,6 +6,8 @@ struct VestExecutionDemoView: View {
     @State private var dataStore = DataStore()
     @State private var showConversationModal = false
     @State private var showVestDetailsModal = false
+    @State private var showApprovalSheet = false
+    @State private var planApproved = false
 
     var body: some View {
         NavigationStack {
@@ -45,6 +47,42 @@ struct VestExecutionDemoView: View {
                             // Sprint 4: Trade Recommendation
                             TradeRecommendationCard(vest: vest)
 
+                            // Sprint 5: Approval Buttons
+                            if !planApproved {
+                                ApprovalButtons(
+                                    vest: vest,
+                                    onApprove: {
+                                        showApprovalSheet = true
+                                    },
+                                    onRequestChanges: {
+                                        // TODO: Implement request changes flow
+                                        print("Request changes tapped")
+                                    }
+                                )
+                            } else {
+                                // Approved state
+                                VStack(spacing: 12) {
+                                    HStack(spacing: 8) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .font(.title2)
+                                            .foregroundStyle(.green)
+
+                                        Text("Plan Approved")
+                                            .font(.headline)
+                                            .foregroundStyle(.primary)
+                                    }
+
+                                    Text("Your plan will execute on \(vest.vestDate, format: .dateTime.month(.abbreviated).day())")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(.green.opacity(0.1))
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .padding(.horizontal, 20)
+                            }
+
                             // Placeholder for future components
                             Text("Future components will appear below:")
                                 .font(.caption)
@@ -52,8 +90,6 @@ struct VestExecutionDemoView: View {
                                 .padding(.top, 40)
 
                             VStack(alignment: .leading, spacing: 12) {
-                                Label("Approval Buttons", systemImage: "circle")
-                                    .foregroundStyle(.tertiary)
                                 Label("Advisor Contact", systemImage: "circle")
                                     .foregroundStyle(.tertiary)
                             }
@@ -75,7 +111,7 @@ struct VestExecutionDemoView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Vest Execution (Sprint 1-4)")
+            .navigationTitle("Vest Execution (Sprint 1-5)")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showConversationModal) {
                 if let recommendation = dataStore.vestEvent?.advisorRecommendation {
@@ -85,6 +121,13 @@ struct VestExecutionDemoView: View {
             .sheet(isPresented: $showVestDetailsModal) {
                 if let vest = dataStore.vestEvent {
                     VestDetailsSheet(vest: vest)
+                }
+            }
+            .sheet(isPresented: $showApprovalSheet) {
+                if let vest = dataStore.vestEvent {
+                    ApprovalConfirmationSheet(vest: vest) {
+                        planApproved = true
+                    }
                 }
             }
         }
