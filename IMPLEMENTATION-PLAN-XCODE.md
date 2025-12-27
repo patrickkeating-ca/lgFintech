@@ -18,13 +18,16 @@ This document outlines the implementation plan for the vest execution screen in 
 
 ### Marcus (Standard Tier)
 - **Vest Amount:** $67,000 (estimated - adjust to actual)
-- **Advisor:** Sofia [Last Name] (or similar) - Financial Advisor
-- **Contact:** Shared support line: (800) 555-XXXX (not direct line)
+- **Advisor:** Sofia Patel - Financial Advisor
+- **Contact:** Shared support line: (800) 555-2213 (not direct line)
 - **Scenario:** House down payment
 - **Discussion Points:** Down payment timing and cash needs, diversification strategy, ESPP contribution decisions, balancing short-term (house) and long-term goals
 - **Recommendation:** Similar structure, personalized to Marcus's goals
 
-**Key Difference:** Both get recommendations from financial advisors. Premium tier gets senior wealth advisor with direct access. Standard tier gets financial advisor with shared support line. Both have "Request Changes" option.
+**Key Difference:** Both get recommendations from financial advisors. Premium tier gets senior wealth advisor with direct access. Standard tier gets financial advisor with shared support line. 
+
+Alex has "Request Changes" option.
+
 
 ---
 
