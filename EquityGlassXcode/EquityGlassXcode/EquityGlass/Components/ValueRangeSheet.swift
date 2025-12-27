@@ -56,13 +56,17 @@ struct ValueRangeSheet: View {
                         Text("See how stock price changes affect your net value after taxes")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+
+                        Text("\(vest.sharesVesting.formatted()) shares vesting")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
                     }
 
                     // Chart section
                     VStack(alignment: .leading, spacing: 16) {
                         // Chart
                         Chart {
-                            // Area gradient (fintech green/teal)
+                            // Area gradient (corporate blue)
                             ForEach(priceRange) { point in
                                 AreaMark(
                                     x: .value("Price", point.stockPrice),
@@ -71,9 +75,9 @@ struct ValueRangeSheet: View {
                                 .foregroundStyle(
                                     LinearGradient(
                                         colors: [
-                                            Color.green.opacity(0.25),
-                                            Color.teal.opacity(0.15),
-                                            Color.green.opacity(0.05)
+                                            Color.blue.opacity(0.25),
+                                            Color.cyan.opacity(0.15),
+                                            Color.blue.opacity(0.05)
                                         ],
                                         startPoint: .top,
                                         endPoint: .bottom
@@ -87,20 +91,20 @@ struct ValueRangeSheet: View {
                                     x: .value("Price", point.stockPrice),
                                     y: .value("Net Value", point.netValue)
                                 )
-                                .foregroundStyle(Color.green)
+                                .foregroundStyle(Color.blue)
                                 .lineStyle(StrokeStyle(lineWidth: 2.5))
                             }
 
                             // Current price marker at bottom
                             RuleMark(x: .value("Current", vest.stockPrice))
                                 .foregroundStyle(Color.secondary.opacity(0.6))
-                                .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
-                                .annotation(position: .bottom, alignment: .center, spacing: 4) {
+                                .lineStyle(StrokeStyle(lineWidth: 2.5, dash: [5, 3]))
+                                .annotation(position: .bottom, alignment: .center, spacing: -50) {
                                     VStack(spacing: 2) {
-                                        Image(systemName: "arrowtriangle.down.fill")
+                                        Text(vest.stockPrice, format: .currency(code: "USD"))
                                             .font(.caption2)
                                             .foregroundStyle(.secondary)
-                                        Text(vest.stockPrice, format: .currency(code: "USD"))
+                                        Image(systemName: "arrowtriangle.down.fill")
                                             .font(.caption2)
                                             .foregroundStyle(.secondary)
                                     }
@@ -121,7 +125,7 @@ struct ValueRangeSheet: View {
                                     x: .value("Price", selectedPoint.stockPrice),
                                     y: .value("Net Value", selectedPoint.netValue)
                                 )
-                                .foregroundStyle(Color.green)
+                                .foregroundStyle(Color.blue)
                                 .symbolSize(120)
                                 .annotation(position: .top, alignment: .center, spacing: 12) {
                                     VStack(spacing: 4) {
