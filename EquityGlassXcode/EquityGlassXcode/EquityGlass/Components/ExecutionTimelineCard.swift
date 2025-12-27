@@ -67,12 +67,7 @@ struct ExecutionTimelineCard: View {
                     .animation(.spring(response: 0.3), value: isExpanded)
             }
 
-            if !isExpanded {
-                // Collapsed state - show summary
-                Text("4 key dates • Tap to expand")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            } else {
+            if isExpanded {
                 // Expanded state - show all 4 milestones
                 VStack(spacing: 16) {
                     ForEach(Array(executionMilestones.enumerated()), id: \.offset) { index, milestone in
@@ -98,7 +93,7 @@ struct ExecutionTimelineCard: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Execution timeline. 4 key dates. \(isExpanded ? "Expanded" : "Tap to expand")")
+        .accessibilityLabel("Execution timeline. \(isExpanded ? "Expanded" : "Tap to expand")")
         .accessibilityHint(isExpanded ? "Double tap to collapse" : "Double tap to expand timeline")
     }
 
