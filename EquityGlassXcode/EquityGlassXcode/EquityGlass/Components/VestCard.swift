@@ -2,46 +2,41 @@ import SwiftUI
 
 struct VestCard: View {
     let vest: VestEvent
+    let onTap: () -> Void
     @State private var isPressed = false
     @State private var shimmerProgress: CGFloat = -1.0
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            // Header with vest date
-            HStack {
-                Text("UPCOMING VEST")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                HStack(spacing: 4) {
-                    Text(vest.vestDate, style: .date)
-                        .font(.subheadline.bold())
-                    Text("•")
-                        .foregroundStyle(.secondary)
-                    Text("\(vest.daysUntilVest) days")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-            }
+            // Header
+            Text("UPCOMING VEST")
+                .font(.caption)
+                .foregroundStyle(.secondary)
 
-            // Share count (always visible)
+            // Share count (prominent, centered)
             Text("\(vest.sharesVesting.formatted()) shares")
-                .font(.headline)
+                .font(.system(size: 34, weight: .bold, design: .rounded))
+                .frame(maxWidth: .infinity, alignment: .center)
 
-            // Dollar amount (always visible)
-            VStack(alignment: .leading, spacing: 4) {
-                Text("\(vest.estimatedValue, format: .currency(code: "USD"))")
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
-                    .contentTransition(.numericText(value: vest.estimatedValue))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                // Disclaimer
-                Text("Amount may change based on stock price")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
+            // Vest date with countdown
+            HStack(spacing: 4) {
+                Text("Vest Date:")
+                    .font(.body)
+                    .foregroundStyle(.secondary)
+                Text(vest.vestDate, format: .dateTime.month(.abbreviated).day())
+                    .font(.body.bold())
+                    .foregroundStyle(.primary)
+                Text("(\(vest.daysUntilVest) days)")
+                    .font(.body)
+                    .foregroundStyle(.secondary)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
-
+            // Tap hint
+            Text("Tap for estimated value and tax")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(20)
         .background(.ultraThinMaterial)
@@ -85,28 +80,32 @@ struct VestCard: View {
                 .onEnded { _ in
                     isPressed = false
                     shimmerProgress = -0.5
+                    onTap()
                 }
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Vest amount: \(vest.estimatedValue.formatted(.currency(code: "USD")))")
-        .accessibilityHint("")
+        .accessibilityHint("Double tap for estimated value and tax breakdown")
     }
 }
 
 #Preview {
-    VestCard(vest: VestEvent(
-        id: UUID(),
-        vestDate: Calendar.current.date(byAdding: .day, value: 47, to: Date())!,
-        companyName: "Minnievision",
-        sharesVesting: 3430,
-        ticker: "MNVSZA",
-        stockPrice: 168.73,
-        stockPriceLastUpdated: Date(),
-        estimatedValue: 578963.9,
-        advisorRecommendation: nil,
-        taxEstimate: nil,
-        timelineEvents: nil,
-        vestHistory: nil
-    ))
+    VestCard(
+        vest: VestEvent(
+            id: UUID(),
+            vestDate: Calendar.current.date(byAdding: .day, value: 47, to: Date())!,
+            companyName: "Minnievision",
+            sharesVesting: 3430,
+            ticker: "MNVSZA",
+            stockPrice: 168.73,
+            stockPriceLastUpdated: Date(),
+            estimatedValue: 578963.9,
+            advisorRecommendation: nil,
+            taxEstimate: nil,
+            timelineEvents: nil,
+            vestHistory: nil
+        ),
+        onTap: { print("Tapped vest card") }
+    )
     .padding()
 }

@@ -4,6 +4,7 @@ struct ContentView: View {
     @State private var dataStore = DataStore()
     @State private var showConversation = false
     @State private var showTimeline = false
+    @State private var showVestDetails = false
 
     var body: some View {
         NavigationStack {
@@ -64,9 +65,11 @@ struct ContentView: View {
                 )
                 .padding(.horizontal)
 
-                // Privacy blur card
-                VestCard(vest: vest)
-                    .padding(.horizontal)
+                // Vest card (tappable for tax breakdown)
+                VestCard(vest: vest, onTap: {
+                    showVestDetails = true
+                })
+                .padding(.horizontal)
 
                 // Advisor hero card (premium feature)
                 if let recommendation = vest.advisorRecommendation {
@@ -89,6 +92,9 @@ struct ContentView: View {
             if let recommendation = vest.advisorRecommendation {
                 AdvisorConversationView(recommendation: recommendation)
             }
+        }
+        .sheet(isPresented: $showVestDetails) {
+            VestDetailsSheet(vest: vest)
         }
     }
 

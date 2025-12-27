@@ -5,6 +5,7 @@ import SwiftUI
 struct VestExecutionDemoView: View {
     @State private var dataStore = DataStore()
     @State private var showConversationModal = false
+    @State private var showVestDetailsModal = false
 
     var body: some View {
         NavigationStack {
@@ -19,16 +20,24 @@ struct VestExecutionDemoView: View {
 
                 ScrollView {
                     VStack(spacing: 20) {
-                        // Hero Feature: About This Plan Card
-                        if let vest = dataStore.vestEvent,
-                           let recommendation = vest.advisorRecommendation {
-
-                            AboutThisPlanCard(
-                                recommendation: recommendation,
-                                onTapAttribution: {
-                                    showConversationModal = true
+                        if let vest = dataStore.vestEvent {
+                            // Sprint 2: Vest Card (tappable for tax breakdown)
+                            VestCard(
+                                vest: vest,
+                                onTap: {
+                                    showVestDetailsModal = true
                                 }
                             )
+
+                            // Sprint 1: About This Plan Card
+                            if let recommendation = vest.advisorRecommendation {
+                                AboutThisPlanCard(
+                                    recommendation: recommendation,
+                                    onTapAttribution: {
+                                        showConversationModal = true
+                                    }
+                                )
+                            }
 
                             // Placeholder for future components
                             Text("Future components will appear below:")
@@ -37,8 +46,6 @@ struct VestExecutionDemoView: View {
                                 .padding(.top, 40)
 
                             VStack(alignment: .leading, spacing: 12) {
-                                Label("Upcoming Vest Card", systemImage: "circle")
-                                    .foregroundStyle(.tertiary)
                                 Label("Execution Timeline", systemImage: "circle")
                                     .foregroundStyle(.tertiary)
                                 Label("Trade Recommendation", systemImage: "circle")
@@ -66,11 +73,16 @@ struct VestExecutionDemoView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Vest Execution (Sprint 1)")
+            .navigationTitle("Vest Execution (Sprint 1-2)")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showConversationModal) {
                 if let recommendation = dataStore.vestEvent?.advisorRecommendation {
                     AdvisorConversationView(recommendation: recommendation)
+                }
+            }
+            .sheet(isPresented: $showVestDetailsModal) {
+                if let vest = dataStore.vestEvent {
+                    VestDetailsSheet(vest: vest)
                 }
             }
         }
