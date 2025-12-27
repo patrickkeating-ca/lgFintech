@@ -30,9 +30,6 @@ struct VestExecutionDemoView: View {
                                 }
                             )
 
-                            // Sprint 3: Execution Timeline
-                            ExecutionTimelineCard(vest: vest)
-
                             // Sprint 4: Trade Recommendation
                             TradeRecommendationCard(vest: vest)
 
@@ -70,6 +67,9 @@ struct VestExecutionDemoView: View {
                                 .background(.green.opacity(0.1))
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .padding(.horizontal, 20)
+
+                                // Sprint 3: Execution Timeline (only shown after approval)
+                                ExecutionTimelineCard(vest: vest)
                             }
 
                             // Sprint 6: Your Schwab Advisor
