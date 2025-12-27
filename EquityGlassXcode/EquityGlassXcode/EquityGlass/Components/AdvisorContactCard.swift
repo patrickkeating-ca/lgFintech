@@ -5,13 +5,13 @@ struct AdvisorContactCard: View {
     @State private var isExpanded = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            // Header with chevron
-            Button(action: {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    isExpanded.toggle()
-                }
-            }) {
+        Button(action: {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isExpanded.toggle()
+            }
+        }) {
+            VStack(alignment: .leading, spacing: 16) {
+                // Header with chevron
                 HStack {
                     Text("YOUR SCHWAB ADVISOR")
                         .font(.caption)
@@ -25,13 +25,11 @@ struct AdvisorContactCard: View {
                         .foregroundStyle(.secondary)
                         .rotationEffect(.degrees(isExpanded ? 180 : 0))
                 }
-            }
-            .buttonStyle(.plain)
 
-            // Always visible: Advisor name with credentials
-            Text(recommendation.fullCredentials)
-                .font(.body.bold())
-                .foregroundStyle(.primary)
+                // Always visible: Advisor name with credentials
+                Text(recommendation.fullCredentials)
+                    .font(.body.bold())
+                    .foregroundStyle(.primary)
 
             // Expandable contact details
             if isExpanded {
@@ -143,7 +141,9 @@ struct AdvisorContactCard: View {
                 }
                 .transition(.opacity.combined(with: .move(edge: .top)))
             }
+            }
         }
+        .buttonStyle(.plain)
         .padding(20)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 16))

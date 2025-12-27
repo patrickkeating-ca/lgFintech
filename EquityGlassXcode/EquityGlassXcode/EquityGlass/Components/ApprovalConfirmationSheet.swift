@@ -11,7 +11,7 @@ struct ApprovalConfirmationSheet: View {
             VStack(alignment: .leading, spacing: 24) {
                 // Title
                 Text("Confirm Authorization")
-                    .font(.largeTitle.bold())
+                    .font(.title2)
                     .foregroundStyle(.primary)
 
                 // Trade plan recommendation
@@ -52,6 +52,13 @@ struct ApprovalConfirmationSheet: View {
                                 .foregroundStyle(.primary)
                         }
                     }
+                    .padding(16)
+                    .background(.ultraThinMaterial)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .strokeBorder(Color.secondary.opacity(0.2), lineWidth: 1)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
 
                 // What happens next
