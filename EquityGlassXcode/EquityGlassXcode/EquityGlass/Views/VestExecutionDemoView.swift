@@ -42,6 +42,9 @@ struct VestExecutionDemoView: View {
                             // Sprint 3: Execution Timeline
                             ExecutionTimelineCard(vest: vest)
 
+                            // Sprint 4: Trade Recommendation
+                            TradeRecommendationCard(vest: vest)
+
                             // Placeholder for future components
                             Text("Future components will appear below:")
                                 .font(.caption)
@@ -49,8 +52,6 @@ struct VestExecutionDemoView: View {
                                 .padding(.top, 40)
 
                             VStack(alignment: .leading, spacing: 12) {
-                                Label("Trade Recommendation", systemImage: "circle")
-                                    .foregroundStyle(.tertiary)
                                 Label("Approval Buttons", systemImage: "circle")
                                     .foregroundStyle(.tertiary)
                                 Label("Advisor Contact", systemImage: "circle")
@@ -74,7 +75,7 @@ struct VestExecutionDemoView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Vest Execution (Sprint 1-3)")
+            .navigationTitle("Vest Execution (Sprint 1-4)")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showConversationModal) {
                 if let recommendation = dataStore.vestEvent?.advisorRecommendation {
