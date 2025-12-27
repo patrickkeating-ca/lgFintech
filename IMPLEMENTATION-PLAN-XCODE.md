@@ -6,6 +6,180 @@ This document outlines the implementation plan for the vest execution screen in 
 
 ---
 
+## Design Philosophy
+
+### Critical Distinction: HTML = Hierarchy, Not Design
+
+**IMPORTANT:** The HTML mockups (`robinhood-mockup-alex-v2.html`) serve as **hierarchy and structure reference ONLY**. Do not use them for color, styling, or visual design guidance.
+
+**What to take from HTML:**
+- ✅ Component order and nesting
+- ✅ Information architecture (what goes where)
+- ✅ User flow and interactions (tappable areas, collapsible sections)
+- ✅ Content structure (headers, labels, values)
+
+**What NOT to take from HTML:**
+- ❌ Colors (black backgrounds, green buttons, etc.)
+- ❌ Font sizes and weights
+- ❌ Spacing and padding values
+- ❌ Border styles and shadows
+
+### Design Language: Robinhood Minimalism + Apple HIG + Liquid Glass
+
+**Robinhood Aesthetic (Minimalism & Flow)**
+- "Get in, get out, accomplish what you came for"
+- Reduce cognitive load - only show what's needed
+- Progressive disclosure (collapsible sections)
+- Clear visual hierarchy (most important info largest/first)
+- No unnecessary decoration or ornamentation
+- Fast, glanceable experience
+
+**Apple Human Interface Guidelines**
+- Use iOS native components and patterns
+- Follow platform conventions (swipe gestures, modal presentations)
+- Respect system settings (Dynamic Type, Reduce Motion, Reduce Transparency)
+- Use SF Symbols for icons
+- Native blur materials: `.ultraThinMaterial`, `.thinMaterial`, `.regularMaterial`
+- Support both Light and Dark mode (user can toggle in Settings)
+
+**Liquid Glass Aesthetic**
+- Translucent, layered surfaces with depth
+- Blur effects + gradient borders
+- Frosted glass cards that show content behind
+- Subtle animations (spring physics, smooth transitions)
+- Interactive feedback (shimmer, scale, haptics)
+- Color tints on glass surfaces for semantic meaning (green = positive, blue = neutral, orange = warning)
+- See `docs/LIQUID-GLASS-REFERENCE.md` for implementation patterns
+
+### Implementation Strategy
+
+**Phase 1-5: Function First**
+- Get components working with basic Liquid Glass materials
+- Focus on functionality, data flow, and interactions
+- Use existing components where possible (reuse, don't rebuild)
+- Minimal polish, just enough to demonstrate features
+
+**Phase 6: Visual Polish**
+- Add advanced Liquid Glass effects (gradient borders, shimmer, depth layering)
+- Tune animations and transitions
+- Add haptic feedback
+- Refine spacing and typography
+- Optimize for performance
+
+### Modularity & Reusability
+
+**Shared Components (Alex and Marcus):**
+- Stock price header
+- Upcoming vest card structure
+- Execution timeline layout
+- Trade recommendation split visualization
+- Modal sheets (approval, vest details)
+
+**Tier-Specific Variations:**
+- Advisor name, credentials, contact info
+- Discussion points content
+- Recommendation text (directive vs. educational tone)
+- "Request Changes" button (Alex only)
+- Phone number type (direct line vs. support line)
+
+**Implementation Approach:**
+- Build components with parameters, not duplicates
+- Use conditional rendering based on tier/data
+- Example: `AdvisorContactCard(recommendation: advisorRecommendation)` renders differently based on `contactType` property
+
+### Existing Components (Reuse These!)
+
+The following SwiftUI components already exist and should be **reused or adapted** (not rebuilt from scratch):
+
+1. **`StockInfoHeader.swift`**
+   - Location: `EquityGlass/Components/StockInfoHeader.swift`
+   - Purpose: Displays ticker, stock price, and price change
+   - Status: ✅ Ready to use
+   - Notes: Uses `.ultraThinMaterial`, already has price change color coding
+
+2. **`VestCard.swift`**
+   - Location: `EquityGlass/Components/VestCard.swift`
+   - Purpose: Shows upcoming vest with shares and dollar amount
+   - Status: ⚠️ Needs adaptation for HTML hierarchy
+   - Notes: Has shimmer effect, currently shows amount directly (needs to become tappable for modal)
+
+3. **`SplitVisualization.swift`**
+   - Location: `EquityGlass/Components/SplitVisualization.swift`
+   - Purpose: Expandable Hold/Sell split visualization
+   - Status: ✅ Ready to use
+   - Notes: Already has compact/expanded states, matches HTML structure
+
+4. **`AdvisorHeroCard.swift`**
+   - Location: `EquityGlass/Components/AdvisorHeroCard.swift`
+   - Purpose: Shows advisor info and recommendation summary
+   - Status: ⚠️ Needs to be split into two components
+   - Notes: Currently combines advisor info + execute button. Need to extract into separate "About This Plan" and "Your Advisor" cards
+
+5. **`ExecutionSheet.swift`**
+   - Location: `EquityGlass/Components/ExecutionSheet.swift`
+   - Purpose: Modal for executing trade plan
+   - Status: ⚠️ Needs review for HTML approval flow
+   - Notes: May already have approval confirmation logic
+
+**Existing Models:**
+- `VestEvent.swift` - Core vest data
+- `AdvisorRecommendation.swift` - Advisor conversation and recommendation
+- `TaxEstimate.swift` - Tax withholding breakdown
+- `TimelineEvent.swift` - Timeline milestones
+
+**Existing Services:**
+- `DataStore.swift` - Loads JSON data for scenarios
+
+### New Components to Build
+
+Based on HTML mockup hierarchy, these components **do not exist yet** and need to be created:
+
+1. **`AboutThisPlanCard`** (NEW)
+   - Shows conversation summary, date, duration, overview
+   - Collapsible to reveal discussion notes
+   - Extract from `AdvisorHeroCard` advisor info section
+
+2. **`UpcomingVestCard`** (NEW - replace existing VestCard)
+   - Prominent share count (centered, large, tappable)
+   - Vest date with countdown
+   - Tap hint text
+   - Opens `VestDetailsSheet` on tap
+
+3. **`ExecutionTimelineCard`** (NEW)
+   - Collapsible timeline showing 4 milestones
+   - Icons for each milestone (calendar, checkmark, warning, clock)
+   - Color-coded by type (green = action, orange = warning, gray = deadline)
+
+4. **`TradeRecommendationCard`** (NEW - simpler than SplitVisualization)
+   - Non-expandable, simple split boxes
+   - Just shows Hold/Sell shares with destinations
+   - No tap interaction (read-only display)
+
+5. **`AdvisorContactCard`** (NEW)
+   - Collapsible advisor details
+   - Contact buttons (Message, Call, Book Meeting)
+   - Tier-aware (direct line vs. support line)
+
+6. **`ApprovalConfirmationSheet`** (NEW)
+   - Modal with plan summary
+   - "What Happens Next" section
+   - "Your Control" section (change/cancel options)
+   - T&C agreement
+   - Confirm/Go Back buttons
+
+7. **`VestDetailsSheet`** (NEW)
+   - Modal showing estimated value
+   - Tax breakdown (Federal, State, FICA)
+   - Net after taxes
+   - Disclaimers
+
+8. **`PrimaryActionButton`** and **`SecondaryActionButton`** (NEW)
+   - Reusable button styles
+   - Primary: Green, prominent, high contrast
+   - Secondary: Outline, subtle, lower contrast
+
+---
+
 ## Personas & Scenarios
 
 ### Alex (Premium Tier - Schwab Private Client)
