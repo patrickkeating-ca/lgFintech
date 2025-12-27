@@ -83,20 +83,10 @@ struct VestExecutionDemoView: View {
                                 .padding(.horizontal, 20)
                             }
 
-                            // Placeholder for future components
-                            Text("Future components will appear below:")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .padding(.top, 40)
-
-                            VStack(alignment: .leading, spacing: 12) {
-                                Label("Advisor Contact", systemImage: "circle")
-                                    .foregroundStyle(.tertiary)
+                            // Sprint 6: Your Schwab Advisor
+                            if let recommendation = vest.advisorRecommendation {
+                                AdvisorContactCard(recommendation: recommendation)
                             }
-                            .font(.subheadline)
-                            .padding()
-                            .background(.ultraThinMaterial)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
                         } else {
                             // Loading or error state
                             VStack(spacing: 12) {
