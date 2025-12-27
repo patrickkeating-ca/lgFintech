@@ -17,12 +17,12 @@
     "conversationDate": "2025-12-18T14:30:00Z",
     "conversationDuration": 22,
     "discussionPoints": [
-      "Tax-loss harvesting opportunities before year-end",
-      "Donor-advised fund contribution strategy",
-      "Q1 charitable giving alignment with vesting schedule",
-      "70/30 split execution timing"
+      "Tax withholding strategy and timing",
+      "Charitable giving coordination for Q1",
+      "Diversification and concentration risk management",
+      "70/30 split balances tax efficiency and long-term growth"
     ],
-    "recommendationText": "Execute the 70/30 split on vest date. Move 70% to your diversified portfolio immediately. Sell 30% and transfer to checking for tax withholding and charitable contributions. Maria (your tax specialist) will coordinate the donor-advised fund transfer.",
+    "recommendationText": "Hold 70% for diversified portfolio, sell 30% for tax withholding and charitable giving",
     "holdPercentage": 0.70,
     "sellPercentage": 0.30
   },
