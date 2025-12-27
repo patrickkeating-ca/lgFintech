@@ -155,18 +155,6 @@ struct ApprovalConfirmationSheet: View {
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
                 }
-
-                // Request changes link
-                Button(action: {
-                    // TODO: Navigate to request changes flow
-                    print("Request changes")
-                }) {
-                    Text("Request Changes")
-                        .font(.body)
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 8)
             }
             .padding(20)
         }
