@@ -47,26 +47,35 @@ struct VestExecutionDemoView: View {
                                     }
                                 )
                             } else {
-                                // Approved state
-                                VStack(spacing: 12) {
-                                    HStack(spacing: 8) {
-                                        Image(systemName: "checkmark.circle.fill")
+                                // Approved state - View Trade Order button
+                                Button(action: {
+                                    // TODO: Show trade order details
+                                    print("View Trade Order tapped")
+                                }) {
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "doc.text.fill")
                                             .font(.title2)
-                                            .foregroundStyle(.green)
+                                            .foregroundStyle(.blue)
 
-                                        Text("Plan Approved")
+                                        Text("View Trade Order")
                                             .font(.headline)
                                             .foregroundStyle(.primary)
-                                    }
 
-                                    Text("Your plan will execute on \(vest.vestDate, format: .dateTime.month(.abbreviated).day())")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
+                                        Spacer()
+
+                                        Image(systemName: "chevron.right")
+                                            .font(.body)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(.blue.opacity(0.08))
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .strokeBorder(Color.blue.opacity(0.2), lineWidth: 1)
+                                    )
                                 }
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(.green.opacity(0.1))
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .padding(.horizontal, 20)
 
                                 // Sprint 3: Execution Timeline (only shown after approval)
