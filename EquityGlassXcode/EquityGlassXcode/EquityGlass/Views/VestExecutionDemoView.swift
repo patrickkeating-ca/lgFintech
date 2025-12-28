@@ -6,6 +6,7 @@ struct VestExecutionDemoView: View {
     @State private var dataStore = DataStore()
     @State private var showVestDetailsModal = false
     @State private var showApprovalSheet = false
+    @State private var showTimeline = false
     @State private var planApproved = false
 
     var body: some View {
@@ -92,6 +93,23 @@ struct VestExecutionDemoView: View {
             }
             .navigationTitle("Vest Execution (Sprint 1-5)")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    if let vest = dataStore.vestEvent, let events = vest.timelineEvents, !events.isEmpty {
+                        Button(action: {
+                            showTimeline = true
+                        }) {
+                            Image(systemName: "calendar")
+                                .font(.system(size: 18, weight: .semibold))
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $showTimeline) {
+                if let vest = dataStore.vestEvent, let events = vest.timelineEvents {
+                    TimelineSheetView(events: events, vestHistory: vest.vestHistory)
+                }
+            }
             .sheet(isPresented: $showVestDetailsModal) {
                 if let vest = dataStore.vestEvent {
                     VestDetailsSheet(vest: vest)
@@ -111,6 +129,11 @@ struct VestExecutionDemoView: View {
     }
 }
 
-#Preview {
+#Preview("Light Mode") {
     VestExecutionDemoView()
+}
+
+#Preview("Dark Mode") {
+    VestExecutionDemoView()
+        .preferredColorScheme(.dark)
 }

@@ -45,7 +45,8 @@
       "currentPrice": 112.18,
       "soldPrice": null,
       "soldDate": null,
-      "lotNumber": "RSU-2025-Q1-001"
+      "lotNumber": "RSU-2025-Q1-001",
+      "type": "RSU"
     },
     {
       "id": "a93e313c-6765-4dac-8717-efc4a59ce347",
@@ -55,7 +56,23 @@
       "currentPrice": null,
       "soldPrice": 102.07,
       "soldDate": "2024-12-10T14:30:00Z",
-      "lotNumber": "RSU-2024-Q4-003"
+      "lotNumber": "RSU-2024-Q4-003",
+      "type": "RSU"
+    },
+    {
+      "id": "b8e7c4d3-9a2b-4f1e-8c5d-7e9f0a1b2c3d",
+      "vestDate": "2024-08-15T09:00:00Z",
+      "shares": 1000,
+      "vestPrice": 88.50,
+      "currentPrice": 112.18,
+      "soldPrice": null,
+      "soldDate": null,
+      "lotNumber": "PSU-2024-Q3-001",
+      "type": "PSU",
+      "sharesHeld": 700,
+      "sharesSold": 300,
+      "soldPortionPrice": 94.20,
+      "soldPortionDate": "2024-09-01T10:00:00Z"
     }
   ],
   "timelineEvents": [
