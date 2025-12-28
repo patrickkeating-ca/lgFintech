@@ -7,6 +7,7 @@ struct VestExecutionDemoView: View {
     @State private var showVestDetailsModal = false
     @State private var showApprovalSheet = false
     @State private var showTimeline = false
+    @State private var showTradeOrderSheet = false
     @State private var planApproved = false
 
     var body: some View {
@@ -49,8 +50,7 @@ struct VestExecutionDemoView: View {
                             } else {
                                 // Approved state - View Trade Order button
                                 Button(action: {
-                                    // TODO: Show trade order details
-                                    print("View Trade Order tapped")
+                                    showTradeOrderSheet = true
                                 }) {
                                     HStack(spacing: 12) {
                                         Image(systemName: "doc.text.fill")
@@ -129,6 +129,11 @@ struct VestExecutionDemoView: View {
                     ApprovalConfirmationSheet(vest: vest) {
                         planApproved = true
                     }
+                }
+            }
+            .sheet(isPresented: $showTradeOrderSheet) {
+                if let vest = dataStore.vestEvent {
+                    ViewTradeOrderSheet(vest: vest)
                 }
             }
         }

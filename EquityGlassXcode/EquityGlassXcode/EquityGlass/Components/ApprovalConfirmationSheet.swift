@@ -11,6 +11,9 @@ struct ApprovalConfirmationSheet: View {
     @State private var pulseScale: CGFloat = 1.0
     @State private var successRipple: CGFloat = 0
     @State private var dismissing = false
+    @State private var floatOffset: CGFloat = 0
+    @State private var glowPulse: CGFloat = 1.0
+    @State private var shimmerOffset: CGFloat = -200
 
     enum ApprovalState {
         case confirmation
@@ -62,7 +65,7 @@ struct ApprovalConfirmationSheet: View {
                 HStack {
                     Image(systemName: "calendar")
                         .foregroundStyle(.blue)
-                    Text("Executes on \(vest.vestDate, style: .date)")
+                    Text("Executes on \(executionDate, style: .date)")
                         .font(.subheadline)
                     Spacer()
                 }
@@ -230,43 +233,135 @@ struct ApprovalConfirmationSheet: View {
         VStack(spacing: 24) {
             Spacer()
 
-            // Success checkmark with ripple
+            // Success checkmark with liquid glass effects
             ZStack {
-                // Expanding gradient ripple
+                // Outer expanding ripple (multiple waves)
+                ForEach(0..<3) { index in
+                    Circle()
+                        .stroke(
+                            LinearGradient(
+                                colors: [
+                                    Color.green.opacity(0.4),
+                                    Color.green.opacity(0)
+                                ],
+                                startPoint: .center,
+                                endPoint: .bottom
+                            ),
+                            lineWidth: 2
+                        )
+                        .frame(
+                            width: 100 * successRipple + CGFloat(index) * 20,
+                            height: 100 * successRipple + CGFloat(index) * 20
+                        )
+                        .opacity(max(0, 1.0 - successRipple - CGFloat(index) * 0.2))
+                }
+
+                // Pulsing outer glow
                 Circle()
-                    .stroke(
-                        LinearGradient(
+                    .fill(
+                        RadialGradient(
                             colors: [
-                                Color.green.opacity(0.6),
+                                Color.green.opacity(0.3),
+                                Color.green.opacity(0.1),
                                 Color.green.opacity(0)
                             ],
-                            startPoint: .center,
-                            endPoint: .bottom
-                        ),
-                        lineWidth: 3
+                            center: .center,
+                            startRadius: 30,
+                            endRadius: 60
+                        )
                     )
-                    .frame(width: 100 * successRipple, height: 100 * successRipple)
-                    .opacity(1.0 - successRipple)
+                    .frame(width: 120, height: 120)
+                    .scaleEffect(glowPulse)
+                    .blur(radius: 8)
 
-                // Checkmark circle
+                // Frosted glass inner layer
+                Circle()
+                    .fill(.ultraThinMaterial)
+                    .frame(width: 84, height: 84)
+                    .overlay(
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        Color.white.opacity(0.3),
+                                        Color.white.opacity(0.1)
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                    )
+                    .shadow(color: .green.opacity(0.3), radius: 8, y: 0)
+
+                // Main checkmark circle with gradient
                 Circle()
                     .fill(
                         LinearGradient(
-                            colors: [Color.green.opacity(0.9), Color.green.opacity(0.7)],
+                            colors: [
+                                Color.green.opacity(0.95),
+                                Color.green.opacity(0.75)
+                            ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
                     )
                     .frame(width: 80, height: 80)
-                    .shadow(color: .green.opacity(0.4), radius: 12, y: 4)
+                    .shadow(color: .green.opacity(0.5), radius: 16, y: 4)
+                    .shadow(color: .green.opacity(0.3), radius: 24, y: 8)
 
+                // Shimmer overlay
+                Rectangle()
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color.clear,
+                                Color.white.opacity(0.6),
+                                Color.clear
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .frame(width: 40, height: 100)
+                    .rotationEffect(.degrees(-45))
+                    .offset(x: shimmerOffset)
+                    .mask(
+                        Circle()
+                            .frame(width: 80, height: 80)
+                    )
+
+                // Checkmark icon
                 Image(systemName: "checkmark")
                     .font(.system(size: 40, weight: .bold))
                     .foregroundStyle(.white)
+                    .shadow(color: .black.opacity(0.3), radius: 2, y: 1)
             }
+            .offset(y: floatOffset)
             .onAppear {
+                // Expanding ripple
                 withAnimation(.easeOut(duration: 0.8)) {
                     successRipple = 1.5
+                }
+
+                // Shimmer sweep (one-time)
+                withAnimation(.easeInOut(duration: 1.0).delay(0.3)) {
+                    shimmerOffset = 200
+                }
+
+                // Gentle floating
+                withAnimation(
+                    .easeInOut(duration: 2.5)
+                    .repeatForever(autoreverses: true)
+                ) {
+                    floatOffset = -8
+                }
+
+                // Glow pulse
+                withAnimation(
+                    .easeInOut(duration: 2.0)
+                    .repeatForever(autoreverses: true)
+                ) {
+                    glowPulse = 1.2
                 }
             }
 
@@ -288,7 +383,7 @@ struct ApprovalConfirmationSheet: View {
                 HStack {
                     Image(systemName: "calendar")
                         .foregroundStyle(.blue)
-                    Text("Executes on \(vest.vestDate, style: .date)")
+                    Text("Executes on \(executionDate, style: .date)")
                         .font(.subheadline)
                     Spacer()
                 }
@@ -382,6 +477,12 @@ struct ApprovalConfirmationSheet: View {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         return formatter.string(from: Date())
+    }
+
+    // Execution date is 21 days after vest date (matches ExecutionTimelineCard)
+    private var executionDate: Date {
+        let calendar = Calendar.current
+        return calendar.date(byAdding: .day, value: 21, to: vest.vestDate) ?? vest.vestDate
     }
 }
 

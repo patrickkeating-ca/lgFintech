@@ -53,7 +53,7 @@ struct ValueRangeSheet: View {
                             .foregroundStyle(.secondary)
                             .tracking(0.5)
 
-                        Text("See how stock price changes affect your net value after taxes")
+                        Text("See how stock price changes may affect your net value after taxes")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
 
@@ -195,14 +195,12 @@ struct ValueRangeSheet: View {
                                 }
                         }
 
-                        // Hint text (only when nothing selected)
-                        if selectedPrice == nil {
-                            Text("Tap anywhere on the chart to see values at different prices")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                                .padding(.vertical, 8)
-                        }
+                        // Hint text (persistent)
+                        Text("Tap anywhere on the chart to see values at different prices")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.vertical, 8)
                     }
 
                     // Data table (expandable for accessibility)
