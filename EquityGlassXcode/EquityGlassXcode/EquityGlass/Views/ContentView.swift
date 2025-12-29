@@ -1,164 +1,145 @@
 import SwiftUI
 
+/// Main view for Equity Glass v1.0
+/// Demonstrates vest execution flow with advisor recommendations and trade approval
 struct ContentView: View {
     @State private var dataStore = DataStore()
-    @State private var showConversation = false
+    @State private var showVestDetailsModal = false
+    @State private var showApprovalSheet = false
     @State private var showTimeline = false
-    @State private var showVestDetails = false
+    @State private var showTradeOrderSheet = false
+    @State private var planApproved = false
 
     var body: some View {
         NavigationStack {
             ZStack {
-            // Background
-            Color(.systemBackground)
+                // Background gradient for visual depth
+                LinearGradient(
+                    colors: [Color.blue.opacity(0.1), Color.purple.opacity(0.1)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
                 .ignoresSafeArea()
 
-            if dataStore.isLoading {
-                loadingView
-            } else if let error = dataStore.error {
-                errorView(error)
-            } else if let vest = dataStore.vestEvent {
-                mainContent(vest)
-            } else {
-                emptyView
-            }
-        }
-        .navigationTitle("Equity Vest")
-        .navigationBarTitleDisplayMode(.large)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                if let vest = dataStore.vestEvent, let events = vest.timelineEvents, !events.isEmpty {
-                    Button(action: {
-                        showTimeline = true
-                    }) {
-                        Image(systemName: "calendar")
-                            .font(.system(size: 18, weight: .semibold))
+                ScrollView {
+                    VStack(spacing: 20) {
+                        if let vest = dataStore.vestEvent {
+                            // Vest Card (tappable for tax breakdown)
+                            VestCard(
+                                vest: vest,
+                                onTap: {
+                                    showVestDetailsModal = true
+                                }
+                            )
+
+                            // Trade Recommendation
+                            TradeRecommendationCard(vest: vest)
+
+                            // Approval Buttons
+                            if !planApproved {
+                                ApprovalButtons(
+                                    vest: vest,
+                                    onApprove: {
+                                        showApprovalSheet = true
+                                    },
+                                    onRequestChanges: {
+                                        // TODO: Implement request changes flow
+                                        print("Request changes tapped")
+                                    }
+                                )
+                            } else {
+                                // Approved state - View Trade Order button
+                                Button(action: {
+                                    showTradeOrderSheet = true
+                                }) {
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "doc.text.fill")
+                                            .font(.title2)
+                                            .foregroundStyle(.blue)
+
+                                        Text("View Trade Order")
+                                            .font(.headline)
+                                            .foregroundStyle(.primary)
+
+                                        Spacer()
+
+                                        Image(systemName: "chevron.right")
+                                            .font(.body)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(.blue.opacity(0.08))
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .strokeBorder(Color.blue.opacity(0.2), lineWidth: 1)
+                                    )
+                                }
+                                .padding(.horizontal, 20)
+
+                                // Execution Timeline (only shown after approval)
+                                ExecutionTimelineCard(vest: vest)
+                            }
+
+                            // Your Schwab Advisor
+                            if let recommendation = vest.advisorRecommendation {
+                                AdvisorContactCard(recommendation: recommendation)
+                            }
+                        } else {
+                            // Loading or error state
+                            VStack(spacing: 12) {
+                                ProgressView()
+                                Text("Loading vest data...")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: 300)
+                        }
                     }
-                }
-            }
-        }
-        .sheet(isPresented: $showTimeline) {
-            if let vest = dataStore.vestEvent, let events = vest.timelineEvents {
-                TimelineSheetView(events: events, vestHistory: vest.vestHistory)
-            }
-        }
-        }
-    }
-
-    func mainContent(_ vest: VestEvent) -> some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                // Scenario picker
-                ScenarioPicker(selectedScenario: $dataStore.currentScenario) { scenario in
-                    dataStore.loadScenario(scenario)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
-                .padding(.top, 8)
-
-                // Stock info header
-                StockInfoHeader(
-                    companyName: vest.companyName,
-                    ticker: vest.ticker,
-                    stockPrice: vest.stockPrice,
-                    lastUpdated: vest.stockPriceLastUpdated
-                )
-                .padding(.horizontal)
-
-                // Vest card (tappable for tax breakdown)
-                VestCard(vest: vest, onTap: {
-                    showVestDetails = true
-                })
-                .padding(.horizontal)
-
-                // Advisor hero card (premium feature)
-                if let recommendation = vest.advisorRecommendation {
-                    AdvisorHeroCard(recommendation: recommendation, vest: vest) {
-                        showConversation = true
-                    }
-                    .padding(.horizontal)
-                }
-
-                // Tax withholding layers
-                if let taxEstimate = vest.taxEstimate {
-                    TaxWithholdingLayers(taxEstimate: taxEstimate)
-                        .padding(.horizontal)
-                }
-
-                Spacer(minLength: 40)
-            }
-        }
-        .sheet(isPresented: $showConversation) {
-            if let recommendation = vest.advisorRecommendation {
-                AdvisorConversationView(recommendation: recommendation)
-            }
-        }
-        .sheet(isPresented: $showVestDetails) {
-            VestDetailsSheet(vest: vest)
-        }
-    }
-
-    var loadingView: some View {
-        VStack(spacing: 16) {
-            ProgressView()
-                .scaleEffect(1.5)
-
-            Text("Loading...")
-                .font(.headline)
-        }
-        .padding(32)
-        .background(.thickMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .shadow(radius: 20)
-    }
-
-    func errorView(_ error: Error) -> some View {
-        VStack(spacing: 16) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .font(.largeTitle)
-                .foregroundStyle(.orange)
-
-            Text("Error Loading Data")
-                .font(.headline)
-
-            Text(error.localizedDescription)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-
-            Button(action: {
-                dataStore.loadVestEvent()
-            }) {
-                Text("Try Again")
-                    .font(.headline)
                     .padding()
-                    .background(Color.blue)
-                    .foregroundStyle(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+            }
+            .navigationTitle("Equity Glass")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    if let vest = dataStore.vestEvent, let events = vest.timelineEvents, !events.isEmpty {
+                        Button(action: {
+                            showTimeline = true
+                        }) {
+                            Image(systemName: "calendar")
+                                .font(.system(size: 18, weight: .semibold))
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $showTimeline) {
+                if let vest = dataStore.vestEvent, let events = vest.timelineEvents {
+                    TimelineSheetView(events: events, vestHistory: vest.vestHistory)
+                }
+            }
+            .sheet(isPresented: $showVestDetailsModal) {
+                if let vest = dataStore.vestEvent {
+                    VestDetailsSheet(vest: vest)
+                }
+            }
+            .sheet(isPresented: $showApprovalSheet) {
+                if let vest = dataStore.vestEvent {
+                    ApprovalConfirmationSheet(vest: vest) {
+                        planApproved = true
+                    }
+                }
+            }
+            .sheet(isPresented: $showTradeOrderSheet) {
+                if let vest = dataStore.vestEvent {
+                    ViewTradeOrderSheet(vest: vest)
+                }
             }
         }
-        .padding(32)
-        .background(.regularMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow(radius: 20)
-        .padding()
-    }
-
-    var emptyView: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "calendar.badge.plus")
-                .font(.system(size: 60))
-                .foregroundStyle(.secondary)
-
-            Text("No Vest Data")
-                .font(.headline)
-
-            Text("Add vest-event.json to Resources/Data")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
+        .onAppear {
+            dataStore.loadScenario(.alex)
         }
-        .padding(32)
     }
 }
 
