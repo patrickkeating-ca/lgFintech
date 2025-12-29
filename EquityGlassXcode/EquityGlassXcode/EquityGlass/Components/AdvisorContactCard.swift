@@ -5,12 +5,7 @@ struct AdvisorContactCard: View {
     @State private var isExpanded = false
 
     var body: some View {
-        Button(action: {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                isExpanded.toggle()
-            }
-        }) {
-            VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16) {
                 // Header with chevron
                 HStack {
                     Text("YOUR SCHWAB ADVISOR")
@@ -141,9 +136,13 @@ struct AdvisorContactCard: View {
                 }
                 .transition(.opacity.combined(with: .move(edge: .top)))
             }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isExpanded.toggle()
             }
         }
-        .buttonStyle(.plain)
         .padding(20)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -172,7 +171,7 @@ struct AdvisorContactCard: View {
             )
         )
 
-        // Standard tier (Marcus - no phone, will have SofiaPatelAvatar when photo added)
+        // Standard tier (Marcus - general Schwab line)
         AdvisorContactCard(
             recommendation: AdvisorRecommendation(
                 advisorName: "Sofia",
@@ -180,8 +179,8 @@ struct AdvisorContactCard: View {
                 advisorTitle: "Financial Advisor",
                 advisorCredentials: nil,
                 advisorCompany: "Schwab",
-                advisorPhone: nil,
-                advisorPhotoAsset: nil, // TODO: Add "SofiaPatelAvatar" when asset is ready
+                advisorPhone: "(800) 555-3852",
+                advisorPhotoAsset: "SofiaPatelAvatar",
                 conversationDate: Date(),
                 conversationDuration: 18,
                 discussionPoints: [],
