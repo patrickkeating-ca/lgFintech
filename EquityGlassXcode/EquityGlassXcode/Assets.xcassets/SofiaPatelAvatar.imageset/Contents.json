@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Patel_advisor_headshot.png",
+      "filename" : "Patel_advisor_headshot_1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Patel_advisor_headshot_2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "Patel_advisor_headshot_3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
