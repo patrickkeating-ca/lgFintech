@@ -13,32 +13,78 @@ struct ViewTradeOrderSheet: View {
                         .font(.title2.bold())
                         .padding(.top, 8)
 
-                    // Execution details
+                    // VEST section (automatic)
                     VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Text("VEST")
+                                .font(.caption.bold())
+                                .foregroundStyle(.secondary)
+
+                            Spacer()
+
+                            Text("Automatic")
+                                .font(.caption2.bold())
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 3)
+                                .background(.secondary.opacity(0.6))
+                                .clipShape(Capsule())
+                        }
+
                         Text("\(vest.sharesVesting.formatted()) shares (RSU)")
                             .font(.headline)
 
                         HStack {
                             Image(systemName: "calendar")
-                                .foregroundStyle(.blue)
-                            Text("Executes on \(executionDate, style: .date)")
+                                .foregroundStyle(.secondary)
+                            Text(vest.vestDate, style: .date)
                                 .font(.subheadline)
                             Spacer()
                         }
 
-                        HStack {
-                            Image(systemName: "clock")
-                                .foregroundStyle(.blue)
-                            Text("Market open")
+                        HStack(spacing: 6) {
+                            Image(systemName: "arrow.right")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                            Text("Schwab Brokerage ...328")
                                 .font(.subheadline)
-                            Spacer()
+                                .foregroundStyle(.secondary)
                         }
                     }
                     .padding(16)
                     .background(.regularMaterial)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .strokeBorder(Color.secondary.opacity(0.2), lineWidth: 1)
+                    )
 
-                    // Split breakdown
+                    // Frosted glass divider
+                    VStack(spacing: 8) {
+                        HStack {
+                            Rectangle()
+                                .fill(.ultraThinMaterial)
+                                .frame(height: 1)
+                                .overlay(
+                                    LinearGradient(
+                                        colors: [
+                                            Color.blue.opacity(0.3),
+                                            Color.cyan.opacity(0.2),
+                                            Color.blue.opacity(0.3)
+                                        ],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                        }
+
+                        Text("YOUR TRADE PLAN")
+                            .font(.caption.bold())
+                            .foregroundStyle(.secondary)
+                            .tracking(0.5)
+                    }
+
+                    // Trade plan breakdown
                     VStack(spacing: 12) {
                         // Hold
                         VStack(alignment: .leading, spacing: 8) {
@@ -52,20 +98,29 @@ struct ViewTradeOrderSheet: View {
                                     .foregroundStyle(.green)
                             }
 
-                            HStack(spacing: 6) {
-                                Image(systemName: "arrow.right")
-                                    .font(.caption2)
-                                    .foregroundStyle(.tertiary)
-                                Text("Schwab Brokerage ...328")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                            }
+                            Text("Remain in brokerage account")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
                         }
                         .padding(16)
                         .background(Color.green.opacity(0.08))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .strokeBorder(
+                                    LinearGradient(
+                                        colors: [
+                                            Color.green.opacity(0.2),
+                                            Color.green.opacity(0.05)
+                                        ],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 1
+                                )
+                        )
 
-                        // Sell
+                        // Sell (with subtle glow)
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
                                 Text("SELL")
@@ -75,6 +130,16 @@ struct ViewTradeOrderSheet: View {
                                 Text("\(vest.sellShares.formatted()) shares")
                                     .font(.title3.bold())
                                     .foregroundStyle(.blue)
+                            }
+
+                            HStack {
+                                Image(systemName: "calendar")
+                                    .font(.caption)
+                                    .foregroundStyle(.blue)
+                                Text("\(executionDate, style: .date), market open")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                Spacer()
                             }
 
                             HStack(spacing: 6) {
@@ -89,6 +154,21 @@ struct ViewTradeOrderSheet: View {
                         .padding(16)
                         .background(Color.blue.opacity(0.08))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .strokeBorder(
+                                    LinearGradient(
+                                        colors: [
+                                            Color.blue.opacity(0.4),
+                                            Color.cyan.opacity(0.2)
+                                        ],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 1.5
+                                )
+                        )
+                        .shadow(color: .blue.opacity(0.15), radius: 8, y: 2)
                     }
 
                     Spacer(minLength: 20)
